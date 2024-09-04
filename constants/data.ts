@@ -118,6 +118,12 @@ export const navItems: NavItem[] = [
     label: 'Dashboard'
   },
   {
+    title: 'Gestión Universal',
+    href: '/dashboard/universal-management',
+    icon: 'dashboard',
+    label: 'Gestión Universal'
+  },
+  {
     title: 'User',
     href: '/dashboard/user',
     icon: 'user',
