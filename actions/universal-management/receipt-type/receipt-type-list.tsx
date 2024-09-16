@@ -1,12 +1,15 @@
 'use server'
-import { getCookie, setCookie } from "../cookies/cookiesAction";
-import { User } from "@/constants/User/user";
+import { DateRange } from "react-day-picker";
 
-export async  function userListUMAction(name:string, companyUuid: string, pageIndex:number, pageSize:number){
+import { User } from "@/constants/User/user";
+import { getCookie } from "@/actions/cookies/cookiesAction";
+import { ReceiptType } from "@/constants/ReceiptType/ReceiptType";
+
+export async  function receiptTypeListUmAction(companyUuid: string){
 
     try{
         const token = await getCookie();
-        let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/universal-management/users?name="+name+"&companyUuid="+companyUuid+"&pageIndex="+pageIndex+"&pageSize="+pageSize;
+        let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/universal-management/receipt-type?companyUuid="+companyUuid;
 
         const messageResponse = await fetch( url, {
             method: "GET",
@@ -24,8 +27,8 @@ export async  function userListUMAction(name:string, companyUuid: string, pageIn
             throw new Error(error);
           }
 
-          const {usersFormatted, total}: {usersFormatted:User[], total:number} = await messageResponse.json();
-          return {usersFormatted, total};
+          const receiptType: ReceiptType[]= await messageResponse.json();
+          return receiptType;
         
     }catch(error){ 
         throw(error)

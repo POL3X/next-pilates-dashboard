@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import UserSessionContext from './context/user-session';
 import { UserSession } from '@/types/auth';
+import { getDefaultCompanyCookie } from '@/actions/cookies/cookiesAction';
 
 function isUserSession(obj: any): obj is UserSession {
   return obj && typeof obj === 'object' && 'uuid' in obj && 'email' in obj;
@@ -24,11 +25,15 @@ export default function SessionHandle({
         const session: UserSession = await sessionAction();
         // Validar la sesión obtenida antes de establecerla
         if (session.uuid != '' || session != null) {
-          console.log("SESION DE USUARIo IN "+ session.uuid)
+          if(session.company.length < 2){
+            session.selectedCompany = session.company[0].uuid
+          }else{
+            const defaultCompany = await getDefaultCompanyCookie()
+            const existCompany = session.company.some(company => company.uuid === defaultCompany?.value);
+            session.selectedCompany = existCompany ? defaultCompany?.value : session.company[0].uuid
+          }
           setUserSession(session);
         } else {
-          console.log("SESION DE USUARIo OUT ")
-
           throw new Error('Invalid session data');
         }
       } catch (err: any) {
@@ -48,7 +53,7 @@ export default function SessionHandle({
   }
 
   return (
-    <UserSessionContext.Provider value={userSession}>
+    <UserSessionContext.Provider value={{userSession, setUserSession}}>
       {children}
     </UserSessionContext.Provider>
   );

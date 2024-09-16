@@ -25,7 +25,6 @@ export async  function sessionAction(){
           }
 
           const userSession: UserSession  = await messageResponse.json();
-          console.log(userSession)
           return userSession;
         
     }catch(error){ 

@@ -2,11 +2,11 @@
 import { getCookie, setCookie } from "../cookies/cookiesAction";
 import { User } from "@/constants/User/user";
 
-export async  function userListUMAction(name:string, companyUuid: string, pageIndex:number, pageSize:number){
+export async  function userInfoUMAction(userUuid:string, companyUuid: string){
 
     try{
         const token = await getCookie();
-        let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/universal-management/users?name="+name+"&companyUuid="+companyUuid+"&pageIndex="+pageIndex+"&pageSize="+pageSize;
+        let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/universal-management/user?userUuid="+userUuid+"&companyUuid="+companyUuid;
 
         const messageResponse = await fetch( url, {
             method: "GET",
@@ -24,8 +24,8 @@ export async  function userListUMAction(name:string, companyUuid: string, pageIn
             throw new Error(error);
           }
 
-          const {usersFormatted, total}: {usersFormatted:User[], total:number} = await messageResponse.json();
-          return {usersFormatted, total};
+          const user: User= await messageResponse.json();
+          return user;
         
     }catch(error){ 
         throw(error)

@@ -2,9 +2,11 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
-import { User } from '@/constants/User/user';
+import { Receipt } from '@/constants/Receipt/Receipt';
+import { Badge } from '@/components/ui/badge';
+import { monthNames } from '@/constants/MonthNames';
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<Receipt>[] = [
   {
     id: 'select',
     cell: ({ row, table }) => (
@@ -31,8 +33,25 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'name',
-    header: 'Nombre'
+    accessorKey: 'createdAt',
+    header: 'PERIODO',
+    cell: ({row}) => {
+      const receipt = row.original
+      return <><p>{receipt.createdAt != undefined ? monthNames[new Date(receipt.createdAt).getMonth()] +" " +new Date(receipt.createdAt).getFullYear() : '-'}</p></> 
+    }
+  },
+  {
+    accessorKey: 'status',
+    header: 'ESTADO',
+    cell: ({row}) => {
+      const receipt = row.original
+      console.log(receipt.status)
+      if(receipt.status == 'PENDING'){
+        return <Badge className='bg-blue-200 text-blue-800'>Pendiente</Badge>
+      }else{
+        return <Badge className='bg-green-200 text-green-800'>Cobrado</Badge>
+      }
+    }
   },
   {
     id: 'actions',

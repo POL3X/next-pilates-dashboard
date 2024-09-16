@@ -2,7 +2,8 @@ export interface UserSession{
     uuid: string,
     role: string,
     name: string,
-    company:CompanySession[]
+    company:CompanySession[],
+    selectedCompany?: string
 }
 
 export interface CompanySession{

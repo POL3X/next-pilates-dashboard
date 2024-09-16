@@ -2,13 +2,26 @@
 
 import { cookies } from "next/headers";
 
-export async function  setCookie(token: string, expirationDate: string){
+export async function setCookie(token: string, expirationDate: string){
     cookies().set('token', token,{
         path: '/',
         expires: new Date(expirationDate),
         secure: true,
         httpOnly: true,
       })  
+}
+
+
+export async function setCookieDefaultCompany(companyUuid: string){
+    cookies().set('defaultCompany', companyUuid,{
+        path: '/',
+        secure: true,
+        httpOnly: true,
+      })  
+}
+
+export async function getDefaultCompanyCookie(){
+    return cookies().get('defaultCompany');  
 }
 
 export async function getCookie(){

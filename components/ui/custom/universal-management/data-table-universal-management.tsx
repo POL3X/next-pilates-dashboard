@@ -21,6 +21,8 @@ import { Input } from '../../input';
 import { Button } from '../../button';
 import { ScrollArea, ScrollBar } from '../../scroll-area';
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+import { User } from '@/constants/User/user';
+import { useEffect } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,7 +34,8 @@ interface DataTableProps<TData, TValue> {
   pageSize:number;
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>
   nameFilter:string,
-  setNameFilter: React.Dispatch<React.SetStateAction<string>>
+  setNameFilter: React.Dispatch<React.SetStateAction<string>>,
+  setUserRowSelected: React.Dispatch<React.SetStateAction<User | null>>
 }
 
 export function DataTableUniversalManagement<TData, TValue>({
@@ -45,7 +48,8 @@ export function DataTableUniversalManagement<TData, TValue>({
   pageSize,
   setPagination,
   nameFilter,
-  setNameFilter
+  setNameFilter,
+  setUserRowSelected
 }: DataTableProps<TData, TValue>) {
 
   const table = useReactTable({
@@ -66,6 +70,17 @@ export function DataTableUniversalManagement<TData, TValue>({
   const onSearchChangeUsername = (value: string) => {
     setNameFilter(value);
   }
+
+  const handleRowClick = (rowId: string) => {
+    const isSelected = table.getRow(rowId).getIsSelected();
+    table.resetRowSelection(); // Deselecciona todas las filas
+    if (!isSelected) {
+      table.getRow(rowId).toggleSelected(true); // Selecciona la fila actual
+      setUserRowSelected(table.getRow(rowId).original as unknown as User); // Actualiza el estado del usuario seleccionado
+    } else {
+      setUserRowSelected(null); // Deselecciona el usuario si la fila ya estaba seleccionada
+    }
+  };
 
   return (
     <>
@@ -103,6 +118,7 @@ export function DataTableUniversalManagement<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleRowClick(row.id)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

@@ -8,17 +8,17 @@ import { columns } from './columns';
 import { DataTableUniversalManagement } from '@/components/ui/custom/universal-management/data-table-universal-management';
 import { User } from '@/constants/User/user';
 import { PaginationState } from '@tanstack/react-table';
-import { SetStateAction, useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { userListUMAction } from '@/actions/universal-management/userListUMAction';
 import UserSessionContext from '@/components/layout/context/user-session';
 
 interface ProductsClientProps {
-
+  setUserRowSelected: Dispatch<SetStateAction<User | null>>
 }
 
-export const UniversalManagementClientTable: React.FC<ProductsClientProps> = () => {
+export const UniversalManagementClientTable: React.FC<ProductsClientProps> = ({ setUserRowSelected}: ProductsClientProps) => {
   const router = useRouter();
-  const userSession = useContext(UserSessionContext);
+  const userSessionContextType = useContext(UserSessionContext);
   const [users, setUsers] = useState<User[]>([])
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -30,14 +30,14 @@ export const UniversalManagementClientTable: React.FC<ProductsClientProps> = () 
 
   useEffect(() =>{
     const fetchUsers = async () =>{
-      console.log("UUID  DE COMPAÑIA " + userSession.uuid)
-      const {usersFormatted, total} = await userListUMAction(nameFilter,userSession.company[0].uuid,pageIndex,pageSize)
+      const selectedCompany = userSessionContextType.userSession?.selectedCompany ? userSessionContextType.userSession?.selectedCompany : ''
+      const {usersFormatted, total} = await userListUMAction(nameFilter,selectedCompany,pageIndex,pageSize)
       setUsers(usersFormatted)
       setTotalUsers(total)
       setPageCount(Math.ceil(totalUsers / pageSize))
     }
     fetchUsers()
-  },[pageIndex, nameFilter])
+  },[pageIndex, nameFilter, userSessionContextType.userSession])
 
   
 
@@ -57,15 +57,16 @@ export const UniversalManagementClientTable: React.FC<ProductsClientProps> = () 
       </div>
       <Separator />
       <DataTableUniversalManagement searchKey="name" 
-      columns={columns} 
-      data={users} 
-      totalUsers={totalUsers} 
-      pageCount={pageCount} 
-      pageIndex={pageIndex} 
-      pageSize={pageSize} 
-      setPagination={setPagination} 
-      nameFilter={nameFilter}
-      setNameFilter={setNameFilter}/>
+        columns={columns} 
+        data={users} 
+        totalUsers={totalUsers} 
+        pageCount={pageCount} 
+        pageIndex={pageIndex} 
+        pageSize={pageSize} 
+        setPagination={setPagination} 
+        nameFilter={nameFilter}
+        setNameFilter={setNameFilter}
+        setUserRowSelected={setUserRowSelected}/>
     </>
   );
 };

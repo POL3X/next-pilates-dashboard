@@ -11,7 +11,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { signOut, useSession } from 'next-auth/react';
 import { useContext } from 'react';
 import UserSessionContext from './context/user-session';
 export function UserNav() {
@@ -35,10 +34,10 @@ export function UserNav() {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
-                {session.name}
+                {session.userSession?.name}
               </p>
               <p className="text-xs leading-none text-muted-foreground">
-                {session.name}
+                {session.userSession?.name}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -59,7 +58,7 @@ export function UserNav() {
             <DropdownMenuItem>New Team</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()}>
+          <DropdownMenuItem >
             Log out
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>

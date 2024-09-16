@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
 import { useSidebar } from '@/hooks/useSidebar';
 import Link from 'next/link';
+import { ComboboxNavbar } from '../ui/custom/navbar/combobox';
 
 type SidebarProps = {
   className?: string;

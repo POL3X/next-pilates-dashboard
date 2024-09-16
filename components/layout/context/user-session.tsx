@@ -1,17 +1,28 @@
 // SocketContext.tsx
 
 import { UserSession } from '@/types/auth';
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
-const UserSessionContext = createContext<UserSession>({
+interface UserSessionContextType {
+  userSession: UserSession | null;
+  setUserSession: Dispatch<SetStateAction<UserSession | null>>;
+}
+
+const UserSessionContext = createContext<UserSessionContextType>({
+  userSession: {
     uuid: '',
     role: '',
-    name:'',
-    company:[ {
+    name: '',
+    company: [
+      {
         uuid: '',
         name: '',
-        role:''
-    },]
+        role: '',
+      },
+    ],
+    selectedCompany: '', // Agrega `defaultCompany` aquí si no estaba antes
+  },
+  setUserSession: () => {}, // Proporciona una función vacía por defecto
 });
 
 export default UserSessionContext;

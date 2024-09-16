@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { PencilIcon, CheckIcon } from 'lucide-react'
+import { User } from '@/constants/User/user'
 
 interface UserInfo {
   name: string;
@@ -13,9 +14,10 @@ interface UserInfo {
 
 interface Props {
   isEditing: boolean,
+  user: User | null
 }
 
-export default function UserCard({isEditing}: Props) {
+export default function UserCard({isEditing, user}: Props) {
   const [userInfo, setUserInfo] = useState<UserInfo>({
     name: 'John Doe',
     email: 'john@example.com',
@@ -57,17 +59,17 @@ export default function UserCard({isEditing}: Props) {
         <div className='flex flex-col'>
         <div>
           <label className="text-sm font-medium text-gray-500">Nombre</label>
-          <p className="text-lg font-semibold">{userInfo.name}</p>
+          <p className="text-lg font-semibold">{user?.name}</p>
         </div>
         <div>
           <label className="text-sm font-medium text-gray-500">Email</label>
-            <p className="text-lg">{userInfo.email}</p>
+            <p className="text-lg">{user?.email}</p>
         </div>
         </div>        
         <div className='flex flex-col gap-4'>
         <div>
           <label className="text-sm font-medium text-gray-500">Teléfono</label>
-            <p className="text-lg">{userInfo.phone}</p>
+            <p className="text-lg">{user?.phoneNumber}</p>
         </div>
         <div className="">
           <Badge variant="secondary" className="bg-green-100 text-green-800">

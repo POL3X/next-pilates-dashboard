@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from './ui/tooltip';
+import { ComboboxNavbar } from './ui/custom/navbar/combobox';
 
 interface DashboardNavProps {
   items: NavItem[];
@@ -38,6 +39,7 @@ export function DashboardNav({
   return (
     <nav className="grid items-start gap-2">
       <TooltipProvider>
+      <ComboboxNavbar></ComboboxNavbar>
         {items.map((item, index) => {
           const Icon = Icons[item.icon || 'arrowRight'];
           return (

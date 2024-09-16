@@ -1,12 +1,6 @@
 'use client'
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { AreaGraph } from '@/components/charts/area-graph';
-import { BarGraph } from '@/components/charts/bar-graph';
-import { PieGraph } from '@/components/charts/pie-graph';
-import { CalendarDateRangePicker } from '@/components/date-range-picker';
 import PageContainer from '@/components/layout/page-container';
-import { RecentSales } from '@/components/recent-sales';
-import { UserClient } from '@/components/tables/user-tables/client';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -16,18 +10,15 @@ import {
     CardTitle
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { users } from '@/constants/data';
 import { User } from '@/constants/User/user';
-import { userListUMAction } from '@/actions/universal-management/userListUMAction';
-import { SetStateAction, useContext, useEffect, useState } from 'react';
+import { SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import UserSessionContext from '@/components/layout/context/user-session';
-import { PaginationState } from '@tanstack/react-table';
 import { UniversalManagementClientTable } from '@/components/tables/universal-management/UM-client-table';
 import UserCard from '@/components/test/test';
 import { CheckIcon } from '@radix-ui/react-icons';
 import { PencilIcon } from 'lucide-react';
-
-
+import { userInfoUMAction } from '@/actions/universal-management/userInfoUMAction';
+import { ReceiptTab } from '@/components/universal-management/receipt/receipt-tab';
 
 
 const breadcrumbItems = [
@@ -36,9 +27,24 @@ const breadcrumbItems = [
 ];
 export default function page() {
     const [isEditing, setIsEditing] = useState(false)
+    const [userRowSelected, setUserRowSelected] = useState<User | null>(null)
+    const userSessionContextType = useContext(UserSessionContext)
     const handleEdit = () => {
         setIsEditing(!isEditing)
     }
+    const [user, setUser] = useState<User | null>(null)
+
+    useEffect(()=>{
+    
+        const fetchUserInfo = async () => {
+            if(userRowSelected == null || userSessionContextType.userSession == null || userSessionContextType.userSession.selectedCompany == undefined){
+                return
+            }
+            const userInfo = await userInfoUMAction(userRowSelected?.uuid, userSessionContextType.userSession.selectedCompany)
+            setUser(userInfo)
+        }
+        fetchUserInfo()
+    }, [userRowSelected])
 
 
     return (
@@ -49,7 +55,7 @@ export default function page() {
                     <CardHeader>
                     </CardHeader>
                     <CardContent>
-                        <UniversalManagementClientTable />
+                        <UniversalManagementClientTable setUserRowSelected={setUserRowSelected} />
                     </CardContent>
                 </Card>
                 <div className="grid grid-cols-1 grid-rows-[1fr_3fr] gap-2">
@@ -62,7 +68,7 @@ export default function page() {
                             </Button></div> 
                         </CardHeader>
                         <CardContent>
-                            <UserCard isEditing={isEditing}></UserCard>
+                            <UserCard isEditing={isEditing} user={user}></UserCard>
                         </CardContent>
                     </Card>
                     <Card className="w-full ">
@@ -75,6 +81,7 @@ export default function page() {
                                     </TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="receipt" className="space-y-4">
+                                    <ReceiptTab user={user}></ReceiptTab>
                                 </TabsContent>
                                 <TabsContent value="groups" className="space-y-4">
                                 </TabsContent>
