@@ -1,9 +1,12 @@
 import { ReceiptUMTable } from "@/components/tables/receipt-um-tab/receipt-um-table";
 import { Button } from "@/components/ui/button";
 import { User } from "@/constants/User/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CalendarDateRangePickerReceiptUm } from "./date-range-picker-receipt-um";
+import { Receipt } from "@/constants/Receipt/Receipt";
+import { Separator } from "@/components/ui/separator";
+import { Company } from "@/constants/Company/Company";
 
 export interface ReceiptUmFilter {
   dateRange?: DateRange;
@@ -17,6 +20,9 @@ interface Props {
 
 export function ReceiptTab({ user }: Props) {
   const [receiptFilters, setReceiptFilters] = useState<ReceiptUmFilter | undefined>(undefined);
+  const [receiptSelected, setReceiptSelected] = useState<Receipt | undefined>(undefined);
+  const [companyReceipt, setCompanyReceipt] = useState<Company | undefined>(undefined);
+  //traer compañia para el user dentro de userCompany, ya que solo viene el tipo de recibo
 
   const handlePendingClick = () => {
     setReceiptFilters({
@@ -34,11 +40,17 @@ export function ReceiptTab({ user }: Props) {
     });
   };
 
+  useEffect(() => {
+        console.log(user)
+       const company = user?.userCompany?.find((userCompany) => { return userCompany.company?.uuid == receiptSelected?.companyUuid; })
+       setCompanyReceipt(company?.company);
+  }, [receiptSelected])
+
   return (
     <>
-      <div className="flex flex-row gap-2 h-full">
+      <div className="flex flex-row gap-2 ">
         <div className="flex-1 w-full">
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between ">
             <CalendarDateRangePickerReceiptUm date={receiptFilters?.dateRange} setReceiptFilters={setReceiptFilters} />
             <Button
               variant={receiptFilters?.pending ? "default" : "outline"}
@@ -53,9 +65,23 @@ export function ReceiptTab({ user }: Props) {
               {"Completados: 1"}
             </Button>
           </div>
-          <ReceiptUMTable title={"Recibos"} addNewButton={true} user={user} receiptUmFilter={receiptFilters} />
+          <ReceiptUMTable title={"Recibos"} addNewButton={true} user={user} receiptUmFilter={receiptFilters} setReceiptSelected={setReceiptSelected} />
         </div>
-        <div className="flex-1 w-full"></div>
+        <Separator  orientation="vertical"/>
+        <div className="flex-1 w-full">
+          { receiptSelected == undefined ? <></> : 
+            
+            <div>
+              <h1>Recibo</h1>
+              <p className="text-[8px]">{receiptSelected.uuid}</p>
+              <h1>Compañia</h1>
+              <p>{companyReceipt?.name}</p>
+              <p>{companyReceipt?.email}</p>
+              <p>{companyReceipt?.address}</p>
+            </div>
+            
+          }
+        </div>
       </div>
     </>
   );

@@ -19,17 +19,20 @@ import {
 } from '@/components/ui/table';
 
 import { ScrollArea, ScrollBar } from '../../scroll-area';
+import { Receipt } from '@/constants/Receipt/Receipt';
+import { Dispatch, SetStateAction } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  setReceiptSelected: Dispatch<SetStateAction<Receipt | undefined>>
   //setUserRowSelected: React.Dispatch<React.SetStateAction<User | null>>
 }
 
 export function DataTableReceiptUM<TData, TValue>({
   columns,
   data,
-  //setUserRowSelected
+  setReceiptSelected
 }: DataTableProps<TData, TValue>) {
 
   const table = useReactTable({
@@ -49,7 +52,7 @@ export function DataTableReceiptUM<TData, TValue>({
     table.resetRowSelection(); // Deselecciona todas las filas
     if (!isSelected) {
       table.getRow(rowId).toggleSelected(true); // Selecciona la fila actual
-      //setUserRowSelected(table.getRow(rowId).original as unknown as User); // Actualiza el estado del usuario seleccionado
+      setReceiptSelected(table.getRow(rowId).original as unknown as Receipt); // Actualiza el estado del usuario seleccionado
     } else {
       //setUserRowSelected(null); // Deselecciona el usuario si la fila ya estaba seleccionada
     }

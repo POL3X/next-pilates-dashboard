@@ -23,10 +23,11 @@ interface ProductsClientProps {
   title: string,
   addNewButton: boolean,
   user: User | null,
-  receiptUmFilter?: ReceiptUmFilter
+  receiptUmFilter?: ReceiptUmFilter,
+  setReceiptSelected: Dispatch<SetStateAction<Receipt | undefined>>
 }
 
-export const ReceiptUMTable: React.FC<ProductsClientProps> = ({title, addNewButton, user,receiptUmFilter}: ProductsClientProps) => {
+export const ReceiptUMTable: React.FC<ProductsClientProps> = ({title, addNewButton, user,receiptUmFilter,setReceiptSelected}: ProductsClientProps) => {
   const router = useRouter();
   const userSessionContextType = useContext(UserSessionContext);
   const [receipt, setReceipts] = useState<Receipt[]>([])
@@ -42,7 +43,6 @@ export const ReceiptUMTable: React.FC<ProductsClientProps> = ({title, addNewButt
     fetchUsers()
   },[userSessionContextType.userSession, receiptUmFilter,user, refresh])
 
-  
 
   return (
     <>
@@ -55,7 +55,8 @@ export const ReceiptUMTable: React.FC<ProductsClientProps> = ({title, addNewButt
       </div>
       <DataTableReceiptUM 
         columns={columns} 
-        data={receipt} 
+        data={receipt}
+        setReceiptSelected={setReceiptSelected}
         /*setUserRowSelected={setUserRowSelected}*//>
     </>
   );
