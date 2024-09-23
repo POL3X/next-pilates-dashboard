@@ -69,7 +69,7 @@ export default function UserCard({isEditing, user}: Props) {
         <div className='flex flex-col gap-4'>
         <div>
           <label className="text-sm font-medium text-gray-500">Teléfono</label>
-            <p className="text-lg">{user?.phoneNumber}</p>
+            <p className="text-lg">{user?.phoneNumber} -</p>
         </div>
         <div className="">
           <Badge variant="secondary" className="bg-green-100 text-green-800">

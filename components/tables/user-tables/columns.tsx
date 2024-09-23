@@ -1,8 +1,8 @@
 'use client';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
-import { User } from '@/constants/data';
 import { Checkbox } from '@/components/ui/checkbox';
+import { User } from '@/constants/User/user';
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -15,11 +15,7 @@ export const columns: ColumnDef<User>[] = [
       />
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+       row.original.status == "ENABLE"? <span className="flex h-2 w-2 translate-y-1 rounded-full bg-green-500" /> : <span className="flex h-2 w-2 translate-y-1 rounded-full bg-red-500" />
     ),
     enableSorting: false,
     enableHiding: false

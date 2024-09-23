@@ -32,6 +32,7 @@ export const UniversalManagementClientTable: React.FC<ProductsClientProps> = ({ 
     const fetchUsers = async () =>{
       const selectedCompany = userSessionContextType.userSession?.selectedCompany ? userSessionContextType.userSession?.selectedCompany : ''
       const {usersFormatted, total} = await userListUMAction(nameFilter,selectedCompany,pageIndex,pageSize)
+      console.log(usersFormatted)
       setUsers(usersFormatted)
       setTotalUsers(total)
       setPageCount(Math.ceil(totalUsers / pageSize))

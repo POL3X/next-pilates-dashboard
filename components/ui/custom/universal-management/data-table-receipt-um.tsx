@@ -61,7 +61,7 @@ export function DataTableReceiptUM<TData, TValue>({
   return (
     <>
       
-      <ScrollArea className="rounded-md border h-[450px]">
+      <ScrollArea className="rounded-md border h-[390px]">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

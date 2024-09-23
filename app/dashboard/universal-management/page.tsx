@@ -60,7 +60,7 @@ export default function page() {
                 </Card>
                 <div className="grid grid-cols-1 grid-rows-[1fr_3fr] gap-2">
                     <Card className="w-full ">
-                        <CardHeader>
+                        <CardHeader className='pb-2'>
                            <div className='flex flex-row justify-between'>
                            <CardTitle>Información del usuario</CardTitle>
                             <Button variant="ghost" size="icon" onClick={handleEdit}>

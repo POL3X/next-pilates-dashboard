@@ -46,7 +46,7 @@ export function ColumnActions({
         onSubmit={(e) => {
           e.preventDefault();
           setIsEditDisable(!editDisable);
-          updateCol('Lunes',id, name);
+          updateCol(id, name);
           toast({
             title: 'Name Updated',
             variant: 'default',
@@ -109,7 +109,7 @@ export function ColumnActions({
                 setTimeout(() => (document.body.style.pointerEvents = ''), 100);
 
                 setShowDeleteDialog(false);
-                removeCol('Lunes',id);
+                removeCol(id);
                 toast({
                   description: 'This column has been deleted.'
                 });

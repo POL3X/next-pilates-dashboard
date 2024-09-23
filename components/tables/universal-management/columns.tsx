@@ -8,24 +8,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: 'select',
     cell: ({ row, table }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => {
-          const isChecked = !!value;
-          if (isChecked) {
-            const allRows = table.getRowModel().rows;
-            allRows.forEach((otherRow) => {
-              if (otherRow.id !== row.id) {
-                otherRow.toggleSelected(false); // Desselecciona todas las demás filas
-              }
-            });
-            row.toggleSelected(true); // Selecciona solo la fila actual
-          } else {
-            row.toggleSelected(false); // Deselecciona la fila actual
-          }
-        }}
-        aria-label="Select row"
-      />
+      row.original.status == "DISABLE"? <span className="flex h-2 w-2 translate-y-1 rounded-full bg-green-500" /> : <span className="flex h-2 w-2 translate-y-1 rounded-full bg-red-500" />
     ),
     enableSorting: false,
     enableHiding: false

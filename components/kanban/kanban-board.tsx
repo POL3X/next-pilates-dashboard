@@ -2,7 +2,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Task, useTaskStore } from '@/lib/store';
+import { ParentColumns, Task, useTaskStore } from '@/lib/store';
 import { hasDraggableData } from '@/lib/utils';
 import {
   Announcements,
@@ -15,40 +15,25 @@ import {
   useSensors,
   type DragEndEvent,
   type DragOverEvent,
-  type DragStartEvent
+  type DragStartEvent,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import type { Column } from './board-column';
 import { BoardColumn, BoardContainer } from './board-column';
 import NewSectionDialog from './new-section-dialog';
 import { TaskCard } from './task-card';
-// import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 
-const defaultCols = [
-  {
-    id: 'TODO' as const,
-    title: 'Todo'
-  },
-  {
-    id: 'IN_PROGRESS' as const,
-    title: 'In progress'
-  },
-  {
-    id: 'DONE' as const,
-    title: 'Done'
-  }
-] satisfies Column[];
+export type ColumnId = string;
 
-export type ColumnId = (typeof defaultCols)[number]['id'];
+
 
 export function KanbanBoard() {
-  // const [columns, setColumns] = useState<Column[]>(defaultCols);
-  const columns = useTaskStore((state) => state.columns);
+  // Obtener todas las columnas padre y columnas hijo
+  const parentColumns = useTaskStore((state) => state.parentColumns);
   const setColumns = useTaskStore((state) => state.setCols);
   const pickedUpTaskColumn = useRef<ColumnId | null>(null);
-  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-  // const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  // Obtener las tareas
   const tasks = useTaskStore((state) => state.tasks);
   const setTasks = useTaskStore((state) => state.setTasks);
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
@@ -59,9 +44,6 @@ export function KanbanBoard() {
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor)
-    // useSensor(KeyboardSensor, {
-    //   coordinateGetter: coordinateGetter,
-    // }),
   );
 
   useEffect(() => {
@@ -76,7 +58,12 @@ export function KanbanBoard() {
   function getDraggingTaskData(taskId: UniqueIdentifier, columnId: ColumnId) {
     const tasksInColumn = tasks.filter((task) => task.status === columnId);
     const taskPosition = tasksInColumn.findIndex((task) => task.id === taskId);
-    const column = columns.find((col) => col.id === columnId);
+
+    // Buscar la columna a la que pertenece la tarea en todas las columnas padre
+    const column = parentColumns
+      .flatMap((parent) => parent.columns)
+      .find((col: Column) => col.id.toString() === columnId.toString());
+
     return {
       tasksInColumn,
       taskPosition,
@@ -84,55 +71,60 @@ export function KanbanBoard() {
     };
   }
 
+
   const announcements: Announcements = {
     onDragStart({ active }) {
       if (!hasDraggableData(active)) return;
+  
+      // Asegurarnos de trabajar con columnas dentro de los parentColumns
+      const allColumns = parentColumns.flatMap((parent) => parent.columns);
+  
       if (active.data.current?.type === 'Column') {
-        const startColumnIdx = columnsId.findIndex((id) => id === active.id);
-        const startColumn = columns[startColumnIdx];
+        const startColumnIdx = allColumns.findIndex((col) => col.id === active.id);
+        const startColumn = allColumns[startColumnIdx];
         return `Picked up Column ${startColumn?.title} at position: ${
           startColumnIdx + 1
-        } of ${columnsId.length}`;
+        } of ${allColumns.length}`;
       } else if (active.data.current?.type === 'Task') {
-        pickedUpTaskColumn.current = active.data.current.task.status;
-        const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
-          active.id,
-          pickedUpTaskColumn.current
-        );
-        return `Picked up Task ${active.data.current.task.title} at position: ${
-          taskPosition + 1
-        } of ${tasksInColumn.length} in column ${column?.title}`;
+  
+        // Verificar que pickedUpTaskColumn.current no sea null
+        if (pickedUpTaskColumn.current) {
+          const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
+            active.id,
+            pickedUpTaskColumn.current
+          );
+          return `Picked up Task ${active.data.current.task.title} at position: ${
+            taskPosition + 1
+          } of ${tasksInColumn.length} in column ${column?.title}`;
+        }
       }
     },
     onDragOver({ active, over }) {
       if (!hasDraggableData(active) || !hasDraggableData(over)) return;
-
-      if (
-        active.data.current?.type === 'Column' &&
-        over.data.current?.type === 'Column'
-      ) {
-        const overColumnIdx = columnsId.findIndex((id) => id === over.id);
+  
+      // Obtener todas las columnas de los parentColumns
+      const allColumns = parentColumns.flatMap((parent) => parent.columns);
+  
+      if (active.data.current?.type === 'Column' && over.data.current?.type === 'Column') {
+        const overColumnIdx = allColumns.findIndex((col) => col.id === over.id);
         return `Column ${active.data.current.column.title} was moved over ${
           over.data.current.column.title
-        } at position ${overColumnIdx + 1} of ${columnsId.length}`;
-      } else if (
-        active.data.current?.type === 'Task' &&
-        over.data.current?.type === 'Task'
-      ) {
-        const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
-          over.id,
-          over.data.current.task.status
-        );
-        if (over.data.current.task.status !== pickedUpTaskColumn.current) {
-          return `Task ${
-            active.data.current.task.title
-          } was moved over column ${column?.title} in position ${
-            taskPosition + 1
-          } of ${tasksInColumn.length}`;
+        } at position ${overColumnIdx + 1} of ${allColumns.length}`;
+      } else if (active.data.current?.type === 'Task' && over.data.current?.type === 'Task') {
+        
+        // Verificar que pickedUpTaskColumn.current no sea null
+        if (pickedUpTaskColumn.current) {
+          const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
+            over.id,
+            over.data.current.task.id
+          );
+          if (over.data.current.task.status !== pickedUpTaskColumn.current) {
+            return `Task ${active.data.current.task.title} was moved over column ${
+              column?.title
+            } in position ${taskPosition + 1} of ${tasksInColumn.length}`;
+          }
+          return `Task was moved over position ${taskPosition + 1} of ${tasksInColumn.length} in column ${column?.title}`;
         }
-        return `Task was moved over position ${taskPosition + 1} of ${
-          tasksInColumn.length
-        } in column ${column?.title}`;
       }
     },
     onDragEnd({ active, over }) {
@@ -140,33 +132,28 @@ export function KanbanBoard() {
         pickedUpTaskColumn.current = null;
         return;
       }
-      if (
-        active.data.current?.type === 'Column' &&
-        over.data.current?.type === 'Column'
-      ) {
-        const overColumnPosition = columnsId.findIndex((id) => id === over.id);
-
-        return `Column ${
-          active.data.current.column.title
-        } was dropped into position ${overColumnPosition + 1} of ${
-          columnsId.length
-        }`;
-      } else if (
-        active.data.current?.type === 'Task' &&
-        over.data.current?.type === 'Task'
-      ) {
-        const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
-          over.id,
-          over.data.current.task.status
-        );
-        if (over.data.current.task.status !== pickedUpTaskColumn.current) {
-          return `Task was dropped into column ${column?.title} in position ${
-            taskPosition + 1
-          } of ${tasksInColumn.length}`;
+  
+      // Obtener todas las columnas de los parentColumns
+      const allColumns = parentColumns.flatMap((parent) => parent.columns);
+  
+      if (active.data.current?.type === 'Column' && over.data.current?.type === 'Column') {
+        const overColumnPosition = allColumns.findIndex((col) => col.id === over.id);
+        return `Column ${active.data.current.column.title} was dropped into position ${overColumnPosition + 1} of ${allColumns.length}`;
+      } else if (active.data.current?.type === 'Task' && over.data.current?.type === 'Task') {
+        
+        // Verificar que pickedUpTaskColumn.current no sea null
+        if (pickedUpTaskColumn.current) {
+          const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
+            over.id,
+            over.data.current.task.id
+          );
+          if (over.data.current.task.status !== pickedUpTaskColumn.current) {
+            return `Task was dropped into column ${column?.title} in position ${
+              taskPosition + 1
+            } of ${tasksInColumn.length}`;
+          }
+          return `Task was dropped into position ${taskPosition + 1} of ${tasksInColumn.length} in column ${column?.title}`;
         }
-        return `Task was dropped into position ${taskPosition + 1} of ${
-          tasksInColumn.length
-        } in column ${column?.title}`;
       }
       pickedUpTaskColumn.current = null;
     },
@@ -188,22 +175,34 @@ export function KanbanBoard() {
       onDragOver={onDragOver}
     >
       <BoardContainer>
-        <SortableContext items={columnsId}>
-          {columns?.map((col, index) => (
-            <Fragment key={col.id}>
-              <BoardColumn
-                column={col}
-                tasks={tasks.filter((task) => task.status === col.id)}
-              />
-              {index === columns?.length - 1 && (
-                <div className="w-[300px]">
-                  <NewSectionDialog />
+      <div className='flex flex-row h-full gap-4'>
+        {parentColumns.map((parentCol, parentIndex) => (
+          <Fragment key={parentCol.day}>
+              <div className='flex flex-col'>
+            <h2>{parentCol.day}</h2>
+            <SortableContext  items={parentCol.columns.map((col) => col.id)}>
+              {parentCol.columns.map((col: Column, index: number) => (
+              <div className='flex flex-col gap-4'>
+                <Fragment key={col.id}>
+                  <BoardColumn
+                    column={col}
+                    tasks={tasks.filter((task) => task.status === col.id)}
+                  />  
+                  {index === parentCol.columns.length - 1 && (
+                    <div className="w-[300px]">
+                      <NewSectionDialog />
+                    </div>
+                  )}
+                </Fragment>
                 </div>
-              )}
-            </Fragment>
-          ))}
-          {!columns.length && <NewSectionDialog />}
-        </SortableContext>
+              ))}
+            </SortableContext>
+            </div>
+          </Fragment>
+        ))}
+        
+        {!parentColumns.length && <NewSectionDialog />}
+        </div>
       </BoardContainer>
 
       {'document' in window &&
@@ -221,6 +220,7 @@ export function KanbanBoard() {
           document.body
         )}
     </DndContext>
+
   );
 
   function onDragStart(event: DragStartEvent) {
@@ -253,14 +253,27 @@ export function KanbanBoard() {
 
     if (activeId === overId) return;
 
-    const isActiveAColumn = activeData?.type === 'Column';
-    if (!isActiveAColumn) return;
+    const activeColumnIndex = parentColumns
+      .flatMap((parent) => parent.columns)
+      .findIndex((col: { id: UniqueIdentifier }) => col.id === activeId);
 
-    const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+    const overColumnIndex = parentColumns
+      .flatMap((parent) => parent.columns)
+      .findIndex((col: { id: UniqueIdentifier }) => col.id === overId);
 
-    const overColumnIndex = columns.findIndex((col) => col.id === overId);
+    if (activeColumnIndex !== -1 && overColumnIndex !== -1) {
+      const parentDay = parentColumns.find((parent) =>
+        parent.columns.some((col) => col.id === activeId)
+      )?.day;
 
-    setColumns(arrayMove(columns, activeColumnIndex, overColumnIndex));
+      if (parentDay) {
+        setColumns(parentDay, arrayMove(
+          parentColumns.find((parent) => parent.day === parentDay)?.columns || [],
+          activeColumnIndex,
+          overColumnIndex
+        ));
+      }
+    }
   }
 
   function onDragOver(event: DragOverEvent) {
@@ -278,11 +291,11 @@ export function KanbanBoard() {
     const overData = over.data.current;
 
     const isActiveATask = activeData?.type === 'Task';
-    const isOverATask = activeData?.type === 'Task';
+    const isOverATask = overData?.type === 'Task';
 
     if (!isActiveATask) return;
 
-    // Im dropping a Task over another Task
+    // Estoy arrastrando una tarea sobre otra tarea
     if (isActiveATask && isOverATask) {
       const activeIndex = tasks.findIndex((t) => t.id === activeId);
       const overIndex = tasks.findIndex((t) => t.id === overId);
@@ -298,7 +311,7 @@ export function KanbanBoard() {
 
     const isOverAColumn = overData?.type === 'Column';
 
-    // Im dropping a Task over a column
+    // Estoy arrastrando una tarea sobre una columna
     if (isActiveATask && isOverAColumn) {
       const activeIndex = tasks.findIndex((t) => t.id === activeId);
       const activeTask = tasks[activeIndex];
