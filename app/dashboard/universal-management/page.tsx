@@ -1,4 +1,5 @@
 'use client'
+
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Button } from '@/components/ui/button';
@@ -19,13 +20,14 @@ import { CheckIcon } from '@radix-ui/react-icons';
 import { PencilIcon } from 'lucide-react';
 import { userInfoUMAction } from '@/actions/universal-management/userInfoUMAction';
 import { ReceiptTab } from '@/components/universal-management/receipt/receipt-tab';
+import { GroupTab } from '@/components/universal-management/groups/group-tab';
 
 
 const breadcrumbItems = [
     { title: 'Dashboard', link: '/dashboard' },
     { title: 'User', link: '/dashboard/user' }
 ];
-export default function page() {
+export default function Page() {
     const [isEditing, setIsEditing] = useState(false)
     const [userRowSelected, setUserRowSelected] = useState<User | null>(null)
     const userSessionContextType = useContext(UserSessionContext)
@@ -35,7 +37,6 @@ export default function page() {
     const [user, setUser] = useState<User | null>(null)
 
     useEffect(()=>{
-    
         const fetchUserInfo = async () => {
             if(userRowSelected == null || userSessionContextType.userSession == null || userSessionContextType.userSession.selectedCompany == undefined){
                 return
@@ -84,6 +85,7 @@ export default function page() {
                                     <ReceiptTab user={user}></ReceiptTab>
                                 </TabsContent>
                                 <TabsContent value="groups" className="space-y-4">
+                                    <GroupTab userSessionContextType={userSessionContextType} userRowSelected={userRowSelected}></GroupTab>
                                 </TabsContent>
                             </Tabs>
                         </CardContent>

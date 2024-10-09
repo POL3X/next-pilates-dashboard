@@ -4,7 +4,7 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
 import { GripVertical, Scroll } from 'lucide-react';
-import { useMemo } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { ColumnActions } from './column-action';
@@ -13,6 +13,10 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import PageContainer from '../layout/page-container';
 import PageContainerKanban from '../layout/page-container-kanban';
+import { Group } from '@/constants/Group/group';
+import { Badge } from '../ui/badge';
+import { group } from 'console';
+import { badgeColor } from '../ui/custom/Group/badge-color';
 
 export interface Column {
   id: UniqueIdentifier;
@@ -23,18 +27,23 @@ export type ColumnType = 'Column';
 
 export interface ColumnDragData {
   type: ColumnType;
-  column: Column;
+  column: Group;
 }
 
 interface BoardColumnProps {
-  column: Column;
+  column: Group;
   tasks: Task[];
   isOverlay?: boolean;
+  setRefresh: Dispatch<SetStateAction<number>>
 }
 
-export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
-  const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
+export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColumnProps) {
+  const { taskNotWaitList, taskInWaitList, taskNoWId, taskWId } = useMemo(() => {
+    const taskNotWaitList = tasks.filter((task) => task.waitList == false)
+    const taskInWaitList = tasks.filter((task) => task.waitList == true)
+    const taskNoWId = taskNotWaitList.map((task) => task.id);
+    const taskWId = taskInWaitList.map((task) => task.id);
+    return { taskNotWaitList, taskInWaitList, taskNoWId, taskWId };
   }, [tasks]);
 
   const {
@@ -45,13 +54,13 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
     transition,
     isDragging
   } = useSortable({
-    id: column.id,
+    id: column.uuid,
     data: {
       type: 'Column',
       column
     } satisfies ColumnDragData,
     attributes: {
-      roleDescription: `Column: ${column.title}`
+      roleDescription: `Column: ${column.name}`
     }
   });
 
@@ -74,6 +83,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
     }
   );
 
+  const tasksColumn = tasks.filter((task) => (task.status == column.uuid))
   return (
     <Card
       ref={setNodeRef}
@@ -82,42 +92,45 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
-      <CardHeader className="space-between flex flex-row items-center border-b-2 p-4 text-left font-semibold">
-        {/*<Button
-          variant={'ghost'}
-          {...attributes}
-          {...listeners}
-          className=" relative -ml-2 h-auto cursor-grab p-1 text-primary/50"
-        >
-          <span className="sr-only">{`Move column: ${column.title}`}</span>
-          <GripVertical />
-        </Button>
-        {/* <span className="mr-auto !mt-0"> {column.title}</span> */}
-        {/* <Input
-          defaultValue={column.title}
-          className="text-base !mt-0 mr-auto"
-        /> */}
-        <ColumnActions id={column.id} title={column.title} />
+      <CardHeader className="flex flex-col border-b-2 p-4 text-left font-semibold">
+        <div className='space-between flex flex-row items-center '>
+        <ColumnActions id={column.uuid} title={column.name} taskColumns={tasksColumn} setRefresh={setRefresh} />
+        </div>
+        <div className='flex justify-end'>
+          <Badge variant={"outline"} className={badgeColor(taskNotWaitList.length, column.maxUsers)}>{taskNotWaitList.length + "/" + column.maxUsers}</Badge>
+        </div>
       </CardHeader>
-      <CardContent className="flex flex-grow flex-col gap-4 p-2">
-        <ScrollArea className="h-full">
-          <Accordion type="single" collapsible className="w-full" defaultValue={column.id.toLocaleString()}
-          >
-            <AccordionItem value={column.id.toLocaleString()}>
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
-              <AccordionContent>
-                <SortableContext items={tasksIds}>
-                  {tasks.map((task) => (
-                    <TaskCard key={task.id} task={task} />
-                  ))}
-                </SortableContext>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-        </ScrollArea>
+      <CardContent className="flex flex-grow flex-col gap-1 p-2">
+        <SortableContext items={taskNoWId}>
+          {taskNotWaitList.map((task) => {
+            if (task.waitList == false) {
+              return (<TaskCard key={task.id} task={task} />)
+            }
+          })}
+           <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value={"accordion"}>
+            <AccordionTrigger className='flex flex-row justify-between'>
+              <div className='w-full flex flex-row justify-between'>
+                <h4>Lista de espera</h4>
+              <Badge variant={"outline"} className="border-blue-500 text-blue-500"  >{taskInWaitList.length}</Badge>
+              </div>
+              </AccordionTrigger>
+            <AccordionContent>
+            <SortableContext items={taskWId}>
+              {taskInWaitList.map((task) => {
+                if (task.waitList == true) {
+                  return (<TaskCard key={task.id} task={task} />)
+                }
+              })}
+            </SortableContext>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        </SortableContext>
       </CardContent>
+
     </Card>
+    
   );
 }
 
@@ -134,16 +147,15 @@ export function BoardContainer({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <PageContainerKanban scrollable={true}>
-      <div
-        className={variations({
-          dragging: dndContext.active ? 'active' : 'default',
-        })}
-      >
-        <div className="flex flex-col items-start justify-center h-full gap-4 !overflow-auto">
-          {children}
-        </div>
+
+    <div
+      className={variations({
+        dragging: dndContext.active ? 'active' : 'default',
+      })}
+    >
+      <div className="flex flex-col items-start justify-center h-full gap-4 ">
+        {children}
       </div>
-      </PageContainerKanban>
+    </div>
   );
 }

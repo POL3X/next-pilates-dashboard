@@ -8,7 +8,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: 'select',
     cell: ({ row, table }) => (
-      row.original.status == "DISABLE"? <span className="flex h-2 w-2 translate-y-1 rounded-full bg-green-500" /> : <span className="flex h-2 w-2 translate-y-1 rounded-full bg-red-500" />
+      row.original.status == "DISABLE"?  <span className="flex h-2 w-2 translate-y-1 rounded-full bg-red-500"/> : <span className="flex h-2 w-2 translate-y-1 rounded-full bg-green-500" />
     ),
     enableSorting: false,
     enableHiding: false

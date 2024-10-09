@@ -19,6 +19,8 @@ import {
   LucideProps,
   Moon,
   MoreVertical,
+  MoveDownIcon,
+  MoveUpIcon,
   Pizza,
   Plus,
   Settings,
@@ -27,6 +29,7 @@ import {
   Twitter,
   User,
   User2Icon,
+  UserPlus,
   UserX2Icon,
   X
 } from 'lucide-react';
@@ -54,7 +57,10 @@ export const Icons = {
   add: Plus,
   warning: AlertTriangle,
   user: User,
+  userPlus:UserPlus,
   arrowRight: ArrowRight,
+  arrowUp: MoveUpIcon,
+  arrowDown: MoveDownIcon,
   help: HelpCircle,
   pizza: Pizza,
   sun: SunMedium,

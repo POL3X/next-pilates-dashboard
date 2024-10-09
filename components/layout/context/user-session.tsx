@@ -3,7 +3,7 @@
 import { UserSession } from '@/types/auth';
 import { createContext, Dispatch, SetStateAction } from 'react';
 
-interface UserSessionContextType {
+export interface UserSessionContextType {
   userSession: UserSession | null;
   setUserSession: Dispatch<SetStateAction<UserSession | null>>;
 }

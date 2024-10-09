@@ -6,6 +6,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
 import { GripVertical } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { TaskActions } from './task-actions';
 
 // export interface Task {
 //   id: UniqueIdentifier;
@@ -44,9 +45,17 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
     }
   });
 
+  const bgColor = () =>{
+    if(task.waitList){
+      return "#bfdbfe"
+    }
+    return ""
+  }
+
   const style = {
     transition,
-    transform: CSS.Translate.toString(transform)
+    transform: CSS.Translate.toString(transform),
+    background: bgColor()
   };
 
   const variants = cva('', {
@@ -58,6 +67,8 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
     }
   });
 
+ 
+
   return (
     <Card
       ref={setNodeRef}
@@ -66,21 +77,20 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
-      <CardContent className="space-between relative flex flex-row border-b-2 border-secondary px-3 py-3">
-      <Button
+      <CardContent className={"max-h-[40px] min-h-[40px] justify-between relative items-center flex flex-row border-b-2 p-2"}>
+      <div className='flex flex-row items-center'>
+        <Button
           variant={'ghost'}
           {...attributes}
           {...listeners}
-          className="-ml-2 h-auto cursor-grab p-1 text-secondary-foreground/50"
+          className="h-auto cursor-grab p-1 text-secondary-foreground/50"
         >
-          <span className="sr-only">Move task</span>
+          <span className="sr-only ">Mover usuario</span>
           <GripVertical />
         </Button>
-     
-        {task.title}
-        <Badge variant={'outline'} className="ml-auto font-semibold">
-          User
-        </Badge>
+        <span className='text-xs'>{task.title}</span></div>
+      
+        <TaskActions task={task}></TaskActions>
       </CardContent>
     </Card>
   );

@@ -20,16 +20,22 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
-import { useTaskStore } from '@/lib/store';
+import { Task, useTaskStore } from '@/lib/store';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { Input } from '../ui/input';
+import { Icons } from '../icons';
+import {  ComboboxPopoverAddUser } from '../ui/custom/Kanban/combobox/ComboBoxPopoverAddUser';
 
 export function ColumnActions({
   title,
-  id
+  id,
+  taskColumns,
+  setRefresh,
 }: {
   title: string;
   id: UniqueIdentifier;
+  taskColumns: Task[],
+  setRefresh:React.Dispatch<React.SetStateAction<number>>
 }) {
   const [open, setIsOpen] = React.useState(false);
   const [name, setName] = React.useState(title);
@@ -46,7 +52,7 @@ export function ColumnActions({
         onSubmit={(e) => {
           e.preventDefault();
           setIsEditDisable(!editDisable);
-          updateCol('Lunes',id, name);
+          updateCol('Lunes',id.toString(), name);
           toast({
             title: 'Name Updated',
             variant: 'default',
@@ -62,6 +68,7 @@ export function ColumnActions({
           ref={inputRef}
         />
       </form>
+      <ComboboxPopoverAddUser taskColumns={taskColumns} groupUuid={id.toString()} setRefresh={setRefresh}></ComboboxPopoverAddUser>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" className="ml-1">
@@ -109,7 +116,7 @@ export function ColumnActions({
                 setTimeout(() => (document.body.style.pointerEvents = ''), 100);
 
                 setShowDeleteDialog(false);
-                removeCol('Lunes',id);
+                removeCol('Lunes',id.toString());
                 toast({
                   description: 'This column has been deleted.'
                 });

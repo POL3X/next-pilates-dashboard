@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ScrollAreaKanban } from '../ui/scroll-area-kanban';
+import './style.css'
 
 export default function PageContainerKanban({
   children,
@@ -12,7 +13,7 @@ export default function PageContainerKanban({
   return (
     <>
       {scrollable ? (
-        <ScrollAreaKanban className="h-[calc(100dvh-120px)]">
+        <ScrollAreaKanban className="h-[calc(100dvh-180px)] .smooth-control">
           <div className="h-full p-4 md:px-8">{children}</div>
         </ScrollAreaKanban>
       ) : (

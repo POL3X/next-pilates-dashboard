@@ -24,7 +24,7 @@ export default function NewSectionDialog() {
     const { title } = Object.fromEntries(formData);
 
     if (typeof title !== 'string') return;
-    addCol('Lunes',title);
+    //addCol('Lunes',title);
   };
 
   return (

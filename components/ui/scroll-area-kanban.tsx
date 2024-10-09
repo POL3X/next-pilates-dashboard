@@ -5,6 +5,7 @@ import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 
 import { cn } from '@/lib/utils';
 
+
 const ScrollAreaKanban = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
@@ -14,10 +15,11 @@ const ScrollAreaKanban = React.forwardRef<
     className={cn('relative', className)}
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit] !overflow-auto">
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit] !overflow-x-auto !overflow-y-auto">
       {children}
     </ScrollAreaPrimitive.Viewport>
-    <ScrollBar />
+    <ScrollBar orientation='vertical'/>
+    <ScrollBar orientation='horizontal'/>
     <ScrollAreaPrimitive.Corner />
   </ScrollAreaPrimitive.Root>
 ));

@@ -78,3 +78,7 @@
     height: 100dvh;
   }
 }
+
+html{
+  scroll-behavior: smooth;
+}
