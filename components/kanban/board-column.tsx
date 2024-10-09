@@ -45,7 +45,7 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColum
     const taskWId = taskInWaitList.map((task) => task.id);
     return { taskNotWaitList, taskInWaitList, taskNoWId, taskWId };
   }, [tasks]);
-
+  console.log(column)
   const {
     setNodeRef,
     attributes,
@@ -92,11 +92,32 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColum
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
-      <CardHeader className="flex flex-col border-b-2 p-4 text-left font-semibold">
+      <CardHeader className="flex flex-col border-b-2 p-4 text-left font-semibold gap-2">
         <div className='space-between flex flex-row items-center '>
-        <ColumnActions id={column.uuid} title={column.name} taskColumns={tasksColumn} setRefresh={setRefresh} />
+          <ColumnActions id={column.uuid} title={column.name} taskColumns={tasksColumn} setRefresh={setRefresh} group={column} />
         </div>
-        <div className='flex justify-end'>
+        <div className='flex flex-row justify-between '>
+          <ScrollArea className='pb-3 w-[250px]'>
+           <div className='flex flex-row gap-4'>
+           {column.groupGroupAttribute?.map((value) => {
+              return (
+                <div className=' flex flex-row items-center gap-1'>
+                  <Button
+                    className="block !opacity-100 h-[5px]"
+                    style={{
+                      backgroundColor: value.groupAttribute?.color,
+                    }}
+                    variant='outline'
+                    disabled
+                  >
+                    <div />
+                  </Button>
+                  <p className='text-[12px]'>{value.groupAttribute?.title}</p>
+                </div>)
+            })}
+            </div> 
+            <ScrollBar orientation='horizontal'></ScrollBar>
+          </ScrollArea>
           <Badge variant={"outline"} className={badgeColor(taskNotWaitList.length, column.maxUsers)}>{taskNotWaitList.length + "/" + column.maxUsers}</Badge>
         </div>
       </CardHeader>
@@ -107,30 +128,30 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColum
               return (<TaskCard key={task.id} task={task} />)
             }
           })}
-           <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full">
             <AccordionItem value={"accordion"}>
-            <AccordionTrigger className='flex flex-row justify-between'>
-              <div className='w-full flex flex-row justify-between'>
-                <h4>Lista de espera</h4>
-              <Badge variant={"outline"} className="border-blue-500 text-blue-500"  >{taskInWaitList.length}</Badge>
-              </div>
+              <AccordionTrigger className='flex flex-row justify-between'>
+                <div className='w-full flex flex-row justify-between'>
+                  <h4>Lista de espera</h4>
+                  <Badge variant={"outline"} className="border-blue-500 text-blue-500"  >{taskInWaitList.length}</Badge>
+                </div>
               </AccordionTrigger>
-            <AccordionContent>
-            <SortableContext items={taskWId}>
-              {taskInWaitList.map((task) => {
-                if (task.waitList == true) {
-                  return (<TaskCard key={task.id} task={task} />)
-                }
-              })}
-            </SortableContext>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+              <AccordionContent>
+                <SortableContext items={taskWId}>
+                  {taskInWaitList.map((task) => {
+                    if (task.waitList == true) {
+                      return (<TaskCard key={task.id} task={task} />)
+                    }
+                  })}
+                </SortableContext>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </SortableContext>
       </CardContent>
 
     </Card>
-    
+
   );
 }
 

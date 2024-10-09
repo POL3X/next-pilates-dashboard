@@ -25,17 +25,21 @@ import { UniqueIdentifier } from '@dnd-kit/core';
 import { Input } from '../ui/input';
 import { Icons } from '../icons';
 import {  ComboboxPopoverAddUser } from '../ui/custom/Kanban/combobox/ComboBoxPopoverAddUser';
+import { ComboboxGroupGroupAttibute } from '../ui/custom/Kanban/combobox/combobox-group-attribute';
+import { Group } from '@/constants/Group/group';
 
 export function ColumnActions({
   title,
   id,
   taskColumns,
   setRefresh,
+  group
 }: {
   title: string;
   id: UniqueIdentifier;
   taskColumns: Task[],
-  setRefresh:React.Dispatch<React.SetStateAction<number>>
+  setRefresh:React.Dispatch<React.SetStateAction<number>>,
+  group: Group
 }) {
   const [open, setIsOpen] = React.useState(false);
   const [name, setName] = React.useState(title);
@@ -69,6 +73,7 @@ export function ColumnActions({
         />
       </form>
       <ComboboxPopoverAddUser taskColumns={taskColumns} groupUuid={id.toString()} setRefresh={setRefresh}></ComboboxPopoverAddUser>
+      <ComboboxGroupGroupAttibute group={group} groupUuid={id.toString()} setRefresh={setRefresh }></ComboboxGroupGroupAttibute>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" className="ml-1">

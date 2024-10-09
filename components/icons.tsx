@@ -25,6 +25,7 @@ import {
   Plus,
   Settings,
   SunMedium,
+  Tag,
   Trash,
   Twitter,
   User,
@@ -66,6 +67,7 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  tag: Tag,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

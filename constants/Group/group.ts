@@ -1,3 +1,4 @@
+import { GroupGroupAttribute } from "../GroupGroupAttribute/GroupGroupAttribute";
 import { UserGroup } from "../UserGroup/userGroup";
 
 export type Group = {
@@ -9,5 +10,6 @@ export type Group = {
     duration: Date;   // Now using Date for time
     maxUsers: number;
     companyUuid: string;
-    userGroup: UserGroup[]
+    userGroup: UserGroup[];
+    groupGroupAttribute?: GroupGroupAttribute[]
 }

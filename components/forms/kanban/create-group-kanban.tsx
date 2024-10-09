@@ -40,7 +40,6 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
         event.preventDefault(); // Evita que la página se recargue
         console.log(user)
         if(startTimePicker != undefined && durationTimePicker != undefined){
-    
             const newGroup: Group = {
                 uuid: '',
                 companyUuid: userSessionContextType.userSession?.selectedCompany!,  // Asigna el UUID de la empresa seleccionada
@@ -50,6 +49,7 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
                 startTime: startTimePicker, // Hora de inicio desde un formulario o selección
                 duration: durationTimePicker, // Duración del grupo (horas/minutos)
                 maxUsers: createGroupForm.maxUsers, // Número máximo de usuarios permitido
+                userGroup: []
             };
             console.log(newGroup.startTime.toUTCString())
             const groupResponse = await createKanbanGroupAction(newGroup)

@@ -11,13 +11,14 @@ const defaultCols = [
     columns: [
       {
         uuid: '205e0143-b656-482e-ab4f-e42b415e0995',
-        companyUuid: '',  // Asigna el UUID de la empresa seleccionada
-        categoryUuid:'', // Asigna el UUID de la categoría seleccionada
+        companyUuid: '', // Asigna el UUID de la empresa seleccionada
+        categoryUuid: '', // Asigna el UUID de la categoría seleccionada
         name: '', // Asigna el nombre del grupo desde un formulario, por ejemplo
         dayOfWeek: 'Monday', // Asigna el día de la semana seleccionado
         startTime: new Date(), // Hora de inicio desde un formulario o selección
         duration: new Date(), // Duración del grupo (horas/minutos)
-        maxUsers: 0, // Número máximo de usuarios permitido
+        maxUsers: 0,
+        userGroup: []
       }
     ],
     day: 'Lunes'
@@ -26,13 +27,14 @@ const defaultCols = [
     columns: [
       {
         uuid: '8dc394f9-a67d-4802-a13b-7f7daa389999',
-        companyUuid: '',  // Asigna el UUID de la empresa seleccionada
-        categoryUuid:'', // Asigna el UUID de la categoría seleccionada
+        companyUuid: '', // Asigna el UUID de la empresa seleccionada
+        categoryUuid: '', // Asigna el UUID de la categoría seleccionada
         name: '', // Asigna el nombre del grupo desde un formulario, por ejemplo
         dayOfWeek: 'Monday', // Asigna el día de la semana seleccionado
         startTime: new Date(), // Hora de inicio desde un formulario o selección
         duration: new Date(), // Duración del grupo (horas/minutos)
-        maxUsers: 0, // Número máximo de usuarios permitido
+        maxUsers: 0,
+        userGroup: []
       }
     ],
     day: 'Martes'
@@ -41,13 +43,14 @@ const defaultCols = [
     columns: [
       {
         uuid: '456709df-ebca-4329-8094-429a9455d23c',
-        companyUuid: '',  // Asigna el UUID de la empresa seleccionada
-        categoryUuid:'', // Asigna el UUID de la categoría seleccionada
+        companyUuid: '', // Asigna el UUID de la empresa seleccionada
+        categoryUuid: '', // Asigna el UUID de la categoría seleccionada
         name: '', // Asigna el nombre del grupo desde un formulario, por ejemplo
         dayOfWeek: 'Monday', // Asigna el día de la semana seleccionado
         startTime: new Date(), // Hora de inicio desde un formulario o selección
         duration: new Date(), // Duración del grupo (horas/minutos)
-        maxUsers: 0, // Número máximo de usuarios permitido
+        maxUsers: 0,
+        userGroup: []
       }
     ],
     day: 'Miercoles'
@@ -56,13 +59,14 @@ const defaultCols = [
     columns: [
       {
         uuid: '9d4c7f3c-9615-4dc6-9361-70e3a25b8fb0',
-        companyUuid: '',  // Asigna el UUID de la empresa seleccionada
-        categoryUuid:'', // Asigna el UUID de la categoría seleccionada
+        companyUuid: '', // Asigna el UUID de la empresa seleccionada
+        categoryUuid: '', // Asigna el UUID de la categoría seleccionada
         name: '', // Asigna el nombre del grupo desde un formulario, por ejemplo
         dayOfWeek: 'Monday', // Asigna el día de la semana seleccionado
         startTime: new Date(), // Hora de inicio desde un formulario o selección
         duration: new Date(), // Duración del grupo (horas/minutos)
-        maxUsers: 0, // Número máximo de usuarios permitido
+        maxUsers: 0,
+        userGroup: []
       }
     ],
     day: 'Jueves'
@@ -71,13 +75,14 @@ const defaultCols = [
     columns: [
       {
         uuid: 'f70521e7-b139-4de9-a9e9-aaaef70ce9fe',
-        companyUuid: '',  // Asigna el UUID de la empresa seleccionada
-        categoryUuid:'', // Asigna el UUID de la categoría seleccionada
+        companyUuid: '', // Asigna el UUID de la empresa seleccionada
+        categoryUuid: '', // Asigna el UUID de la categoría seleccionada
         name: '', // Asigna el nombre del grupo desde un formulario, por ejemplo
         dayOfWeek: 'Monday', // Asigna el día de la semana seleccionado
         startTime: new Date(), // Hora de inicio desde un formulario o selección
         duration: new Date(), // Duración del grupo (horas/minutos)
-        maxUsers: 0, // Número máximo de usuarios permitido
+        maxUsers: 0,
+        userGroup: []
       }
     ],
     day: 'Viernes'
