@@ -1,16 +1,6 @@
 "use client"
 
 import * as React from "react"
-import {
-    ArrowUpCircle,
-    CheckCircle2,
-    Circle,
-    HelpCircle,
-    LucideIcon,
-    XCircle,
-} from "lucide-react"
-
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
     Command,
@@ -33,8 +23,6 @@ import { groupAttributeListAction } from "@/actions/settings/groupAttributeListA
 import { GroupAttribute } from "@/constants/GroupAttribute/groupAttribute"
 import { createGroupGroupAttributeAction } from "@/actions/Kanban/createGroupGroupAttribute"
 import { Group } from "@/constants/Group/group"
-
-
 
 export function ComboboxGroupGroupAttibute({groupUuid, group,setRefresh}: {groupUuid: string,group: Group, setRefresh: React.Dispatch<React.SetStateAction<number>> }) {
     const [open, setOpen] = React.useState(false)

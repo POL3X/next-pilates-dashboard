@@ -1,9 +1,8 @@
 import PageContainer from "@/components/layout/page-container";
 import { GroupAttributeTab } from "@/components/settings/GroupAttributeTab";
+import { UserAttributeTab } from "@/components/settings/UserAttributeTab";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GroupTab } from "@/components/universal-management/groups/group-tab";
-import { ReceiptTab } from "@/components/universal-management/receipt/receipt-tab";
 
 export default function Page() {
 
@@ -21,6 +20,7 @@ export default function Page() {
                 <GroupAttributeTab/>
                 </TabsContent>
                 <TabsContent value="userAttribute" className="space-y-4">
+                <UserAttributeTab></UserAttributeTab>
                 </TabsContent>
             </Tabs>
         </PageContainer>

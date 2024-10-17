@@ -1,5 +1,6 @@
 import { City } from "../City/City";
 import { UserCompany } from "../UserCompany/UserCompany";
+import { UserUserAttribute } from "../UserUserAttribute/userUserAttribute";
 
 export type User = {
     uuid: string;
@@ -15,4 +16,5 @@ export type User = {
     city?: City;
     userCompany?: UserCompany[];
     phoneNumber?: string;
+    userUserAttribute?: UserUserAttribute[]
 }

@@ -25,7 +25,7 @@ export function GroupAttributeTab(){
     <>
         <NewAttributeGroupDialog user={null} setRefresh={setRefresh}></NewAttributeGroupDialog>
         {groupAttributeList.map((groupAttribute) => {
-            return (<GroupAttributeItem groupAttribute={groupAttribute}></GroupAttributeItem>)
+            return (<GroupAttributeItem groupAttribute={groupAttribute} companyUuid={userSessionContext.userSession?.selectedCompany!} setRefresh={setRefresh}></GroupAttributeItem>)
         })}
     </>)
 }

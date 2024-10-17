@@ -200,6 +200,7 @@ export function KanbanBoard({parentColumnsProp, taskProp, setRefresh}: Props) {
                     column={col}
                     tasks={tasks.filter((task) => task.status === col.uuid)}
                     setRefresh={setRefresh}
+                    companyUuid={userSessionContextType.userSession?.selectedCompany!}
                   />  
                   {index === parentCol.columns.length - 1 && (
                 <></>
@@ -225,6 +226,7 @@ export function KanbanBoard({parentColumnsProp, taskProp, setRefresh}: Props) {
                 column={activeColumn}
                 tasks={tasks.filter((task) => task.status === activeColumn.uuid)}
                 setRefresh={setRefresh}
+                companyUuid={userSessionContextType.userSession?.selectedCompany!}
               />
             )}
             {activeTask && <TaskCard task={activeTask} isOverlay />}

@@ -3,7 +3,6 @@ import { useDndContext, type UniqueIdentifier } from '@dnd-kit/core';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
-import { GripVertical, Scroll } from 'lucide-react';
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader } from '../ui/card';
@@ -11,12 +10,12 @@ import { ColumnActions } from './column-action';
 import { TaskCard } from './task-card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import PageContainer from '../layout/page-container';
-import PageContainerKanban from '../layout/page-container-kanban';
 import { Group } from '@/constants/Group/group';
 import { Badge } from '../ui/badge';
-import { group } from 'console';
 import { badgeColor } from '../ui/custom/Group/badge-color';
+import { getTextColorBasedOnBackground } from '@/lib/utils';
+import { Icons } from '../icons';
+import { deleteGroupGroupAttributeAction } from '@/actions/Kanban/deleteGroupGroupAttributeAction';
 
 export interface Column {
   id: UniqueIdentifier;
@@ -35,9 +34,10 @@ interface BoardColumnProps {
   tasks: Task[];
   isOverlay?: boolean;
   setRefresh: Dispatch<SetStateAction<number>>
+  companyUuid: string
 }
 
-export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColumnProps) {
+export function BoardColumn({ column, tasks, isOverlay, setRefresh, companyUuid }: BoardColumnProps) {
   const { taskNotWaitList, taskInWaitList, taskNoWId, taskWId } = useMemo(() => {
     const taskNotWaitList = tasks.filter((task) => task.waitList == false)
     const taskInWaitList = tasks.filter((task) => task.waitList == true)
@@ -64,6 +64,8 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColum
     }
   });
 
+  const DeleteIcon = Icons['close'];
+
   const style = {
     transition,
     transform: CSS.Translate.toString(transform),
@@ -83,6 +85,11 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColum
     }
   );
 
+  const deleteTag = async (groupAttributeUuid: string) => {
+    await deleteGroupGroupAttributeAction(groupAttributeUuid, column.uuid, companyUuid)
+    setRefresh(Math.random())
+  }
+
   const tasksColumn = tasks.filter((task) => (task.status == column.uuid))
   return (
     <Card
@@ -98,24 +105,29 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh }: BoardColum
         </div>
         <div className='flex flex-row justify-between '>
           <ScrollArea className='pb-3 w-[250px]'>
-           <div className='flex flex-row gap-4'>
-           {column.groupGroupAttribute?.map((value) => {
-              return (
-                <div className=' flex flex-row items-center gap-1'>
-                  <Button
-                    className="block !opacity-100 h-[5px]"
-                    style={{
-                      backgroundColor: value.groupAttribute?.color,
-                    }}
-                    variant='outline'
-                    disabled
-                  >
-                    <div />
-                  </Button>
-                  <p className='text-[12px]'>{value.groupAttribute?.title}</p>
-                </div>)
-            })}
-            </div> 
+            <div className='flex flex-row gap-4'>
+              {column.groupGroupAttribute?.map((value) => {
+                return (
+                  <div className=' flex flex-row items-center gap-1'>
+                    <div
+                      className="flex flex-row items-center p-1 rounded"
+                      style={{
+                        backgroundColor: value.groupAttribute?.color,
+                      }}
+                    >
+                      <p
+                        className="text-[12px]"
+                        style={{ color: getTextColorBasedOnBackground(value.groupAttribute?.color!) }}
+                      >
+                        {value.groupAttribute?.title}
+                      </p>
+                      <Button variant='link' className="w-4 h-3" size={'icon'}><DeleteIcon size={10} color={getTextColorBasedOnBackground(value.groupAttribute?.color!)}
+                      onClick={() => deleteTag(value.groupAttributeUuid)}
+                      ></DeleteIcon></Button>
+                    </div>
+                  </div>)
+              })}
+            </div>
             <ScrollBar orientation='horizontal'></ScrollBar>
           </ScrollArea>
           <Badge variant={"outline"} className={badgeColor(taskNotWaitList.length, column.maxUsers)}>{taskNotWaitList.length + "/" + column.maxUsers}</Badge>

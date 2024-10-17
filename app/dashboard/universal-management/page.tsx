@@ -15,7 +15,7 @@ import { User } from '@/constants/User/user';
 import { SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import UserSessionContext from '@/components/layout/context/user-session';
 import { UniversalManagementClientTable } from '@/components/tables/universal-management/UM-client-table';
-import UserCard from '@/components/test/test';
+import UserCard from '@/components/universal-management/UserInfo/userCard';
 import { CheckIcon } from '@radix-ui/react-icons';
 import { PencilIcon } from 'lucide-react';
 import { userInfoUMAction } from '@/actions/universal-management/userInfoUMAction';
@@ -30,6 +30,7 @@ const breadcrumbItems = [
 export default function Page() {
     const [isEditing, setIsEditing] = useState(false)
     const [userRowSelected, setUserRowSelected] = useState<User | null>(null)
+    const [refresh, setRefresh] = useState<number>(0);
     const userSessionContextType = useContext(UserSessionContext)
     const handleEdit = () => {
         setIsEditing(!isEditing)
@@ -45,7 +46,7 @@ export default function Page() {
             setUser(userInfo)
         }
         fetchUserInfo()
-    }, [userRowSelected])
+    }, [userRowSelected, refresh])
 
 
     return (
@@ -69,7 +70,7 @@ export default function Page() {
                             </Button></div> 
                         </CardHeader>
                         <CardContent>
-                            <UserCard isEditing={isEditing} user={user}></UserCard>
+                            {userRowSelected ? <UserCard isEditing={isEditing} user={user} setRefresh={setRefresh}></UserCard> : <p>Seleccione un Usuario</p>}
                         </CardContent>
                     </Card>
                     <Card className="w-full ">
@@ -82,10 +83,10 @@ export default function Page() {
                                     </TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="receipt" className="space-y-4">
-                                    <ReceiptTab user={user}></ReceiptTab>
+                                {userRowSelected ?<ReceiptTab user={user}></ReceiptTab>:<p>Seleccione un Usuario</p> }
                                 </TabsContent>
                                 <TabsContent value="groups" className="space-y-4">
-                                    <GroupTab userSessionContextType={userSessionContextType} userRowSelected={userRowSelected}></GroupTab>
+                                {userRowSelected ?<GroupTab userSessionContextType={userSessionContextType} userRowSelected={userRowSelected}></GroupTab>:<p>Seleccione un Usuario</p> }
                                 </TabsContent>
                             </Tabs>
                         </CardContent>

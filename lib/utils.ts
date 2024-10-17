@@ -27,3 +27,16 @@ export function hasDraggableData<T extends Active | Over>(
 
   return false;
 }
+
+export function getTextColorBasedOnBackground(bgColor: string) {
+  // Convierte el color hexadecimal a RGB
+  const r = parseInt(bgColor.slice(1, 3), 16);
+  const g = parseInt(bgColor.slice(3, 5), 16);
+  const b = parseInt(bgColor.slice(5, 7), 16);
+
+  // Calcula la luminosidad relativa
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  // Si la luminosidad es menor de 0.5, usa texto blanco; si no, usa texto negro
+  return luminance < 0.5 ? '#FFFFFF' : '#000000';
+}
