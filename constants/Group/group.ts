@@ -1,3 +1,4 @@
+import { Category } from "../Category/category";
 import { GroupGroupAttribute } from "../GroupGroupAttribute/GroupGroupAttribute";
 import { UserGroup } from "../UserGroup/userGroup";
 
@@ -11,5 +12,6 @@ export type Group = {
     maxUsers: number;
     companyUuid: string;
     userGroup: UserGroup[];
-    groupGroupAttribute?: GroupGroupAttribute[]
+    groupGroupAttribute?: GroupGroupAttribute[],
+    category?: Category
 }

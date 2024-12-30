@@ -24,9 +24,13 @@ import { Task, useTaskStore } from '@/lib/store';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { Input } from '../ui/input';
 import { Icons } from '../icons';
-import {  ComboboxPopoverAddUser } from '../ui/custom/Kanban/combobox/ComboBoxPopoverAddUser';
+import { ComboboxPopoverAddUser } from '../ui/custom/Kanban/combobox/ComboBoxPopoverAddUser';
 import { ComboboxGroupGroupAttibute } from '../ui/custom/Kanban/combobox/combobox-group-attribute';
 import { Group } from '@/constants/Group/group';
+import { CreateGroupForm } from './new-group-dialog';
+import EditGroupKanbanDialog from './dialog/edit-group';
+import { useContext } from 'react';
+import KanbanRefreshContext from '../layout/context/kanban-refresh-context';
 
 export function ColumnActions({
   title,
@@ -38,70 +42,64 @@ export function ColumnActions({
   title: string;
   id: UniqueIdentifier;
   taskColumns: Task[],
-  setRefresh:React.Dispatch<React.SetStateAction<number>>,
+  setRefresh: React.Dispatch<React.SetStateAction<number>>,
   group: Group
 }) {
   const [open, setIsOpen] = React.useState(false);
   const [name, setName] = React.useState(title);
+  const [editGroupForm, setEditGroupForm] = React.useState<Group>(group)
+  const [openEditModal, setOpenEditModal] = React.useState<boolean>(false)
   const updateCol = useTaskStore((state) => state.updateCol);
   const removeCol = useTaskStore((state) => state.removeCol);
   const [editDisable, setIsEditDisable] = React.useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const kanbanRefreshContext = useContext(KanbanRefreshContext)
+
 
   return (
     <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setIsEditDisable(!editDisable);
-          updateCol('Lunes',id.toString(), name);
-          toast({
-            title: 'Name Updated',
-            variant: 'default',
-            description: `${title} updated to ${name}`
-          });
-        }}
-      >
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="!mt-0 mr-auto text-base disabled:cursor-pointer disabled:border-none disabled:opacity-100"
-          disabled={editDisable}
-          ref={inputRef}
-        />
-      </form>
-      <ComboboxPopoverAddUser taskColumns={taskColumns} groupUuid={id.toString()} setRefresh={setRefresh}></ComboboxPopoverAddUser>
-      <ComboboxGroupGroupAttibute group={group} groupUuid={id.toString()} setRefresh={setRefresh }></ComboboxGroupGroupAttibute>
-      <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="secondary" className="ml-1">
-            <span className="sr-only">Actions</span>
-            <DotsHorizontalIcon className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            onSelect={() => {
-              setIsEditDisable(!editDisable);
-              setTimeout(() => {
-                inputRef.current && inputRef.current?.focus();
-              }, 500);
-            }}
-          >
-            Rename
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+      <div className='flex flex-row justify-between w-[100%]'>
+        <div className='flex items-center'>
+           <p>{name + ' - ' + group.startTime.toString().slice(0, 5) + ' - ' + group.category?.name} </p>
+          </div>
 
-          <DropdownMenuItem
-            onSelect={() => setShowDeleteDialog(true)}
-            className="text-red-600"
-          >
-            Delete Section
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        <div className='flex flex-row'>
+          <ComboboxPopoverAddUser taskColumns={taskColumns} groupUuid={id.toString()} setRefresh={setRefresh}></ComboboxPopoverAddUser>
+          <ComboboxGroupGroupAttibute group={group} groupUuid={id.toString()} setRefresh={setRefresh}></ComboboxGroupGroupAttibute>
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" className="ml-1">
+                <span className="sr-only">Actions</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onSelect={() => {
+                  setIsEditDisable(!editDisable);
+                  setOpenEditModal(!openEditModal);
+                  setTimeout(() => {
+                    inputRef.current && inputRef.current?.focus();
+                  }, 500);
+                }}
+              >
+                Rename
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onSelect={() => setShowDeleteDialog(true)}
+                className="text-red-600"
+              >
+                Delete Section
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+      </div>
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -119,9 +117,8 @@ export function ColumnActions({
               onClick={() => {
                 // yes, you have to set a timeout
                 setTimeout(() => (document.body.style.pointerEvents = ''), 100);
-
                 setShowDeleteDialog(false);
-                removeCol('Lunes',id.toString());
+                removeCol('Lunes', id.toString());
                 toast({
                   description: 'This column has been deleted.'
                 });
@@ -132,6 +129,7 @@ export function ColumnActions({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <EditGroupKanbanDialog editGroupForm={editGroupForm} setEditGroupForm={setEditGroupForm} user={null} setOpen={setOpenEditModal} open={openEditModal} setRefresh={kanbanRefreshContext.setRefresh}></EditGroupKanbanDialog>
     </>
   );
 }

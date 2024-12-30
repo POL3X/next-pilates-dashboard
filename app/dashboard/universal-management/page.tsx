@@ -22,7 +22,6 @@ import { userInfoUMAction } from '@/actions/universal-management/userInfoUMActio
 import { ReceiptTab } from '@/components/universal-management/receipt/receipt-tab';
 import { GroupTab } from '@/components/universal-management/groups/group-tab';
 
-
 const breadcrumbItems = [
     { title: 'Dashboard', link: '/dashboard' },
     { title: 'User', link: '/dashboard/user' }
@@ -91,7 +90,6 @@ export default function Page() {
                             </Tabs>
                         </CardContent>
                     </Card>
-
                 </div>
             </div>
         </PageContainer>
