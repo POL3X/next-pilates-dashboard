@@ -102,6 +102,7 @@ export function ReceiptTab({ user }: Props) {
   const chargeReceipt = async () => {
     if (receiptSelected) {
       receiptSelected.status = "CHARGED";
+      await editReceiptAction(receiptSelected, receiptSelected.companyUuid)
       setReceiptTypeName(receiptSelected?.receiptType?.name ?? "Personalizado");
       setRefresh(Math.random());
     }
