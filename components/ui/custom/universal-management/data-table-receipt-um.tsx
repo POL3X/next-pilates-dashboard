@@ -20,19 +20,21 @@ import {
 
 import { ScrollArea, ScrollBar } from '../../scroll-area';
 import { Receipt } from '@/constants/Receipt/Receipt';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { CellAction } from '@/components/tables/receipt-um-tab/cell-action';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  setReceiptSelected: Dispatch<SetStateAction<Receipt | undefined>>
-  //setUserRowSelected: React.Dispatch<React.SetStateAction<User | null>>
+  setReceiptSelected: Dispatch<SetStateAction<Receipt | undefined>>;
+  onDelete: () => void; // Add the onDelete prop
 }
 
 export function DataTableReceiptUM<TData, TValue>({
   columns,
   data,
-  setReceiptSelected
+  setReceiptSelected,
+  onDelete
 }: DataTableProps<TData, TValue>) {
 
   const table = useReactTable({
@@ -43,6 +45,10 @@ export function DataTableReceiptUM<TData, TValue>({
     pageCount: -1,
     manualPagination: true,
   });
+
+  useEffect(() => {
+    table.resetRowSelection();
+  }, [data]);
 
   /* this can be used to get the selectedrows 
   console.log("value", table.getFilteredSelectedRowModel()); */
@@ -78,6 +84,7 @@ export function DataTableReceiptUM<TData, TValue>({
                     </TableHead>
                   );
                 })}
+
               </TableRow>
             ))}
           </TableHeader>

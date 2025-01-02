@@ -17,6 +17,8 @@ import { NewReceiptTabButton } from './new-receipt-button';
 import { Receipt } from '@/constants/Receipt/Receipt';
 import { receipListByRecipientAction } from '@/actions/universal-management/receipt/receipListByRecipientAction';
 import { ReceiptUmFilter } from '@/components/universal-management/receipt/receipt-tab';
+import { set } from 'date-fns';
+import { DateRange } from 'react-day-picker';
 
 interface ProductsClientProps {
   //setUserRowSelected: Dispatch<SetStateAction<User | null>>
@@ -25,24 +27,38 @@ interface ProductsClientProps {
   user: User | null,
   receiptUmFilter?: ReceiptUmFilter,
   setReceiptSelected: Dispatch<SetStateAction<Receipt | undefined>>
+  refresh: number,
+  setRefresh: Dispatch<SetStateAction<number>>,
+  setExternalReceipt: Dispatch<SetStateAction<Receipt[] | undefined>>
+  setPendingCount: Dispatch<SetStateAction<number>>
+  setCompleteCount: Dispatch<SetStateAction<number>>
 }
 
-export const ReceiptUMTable: React.FC<ProductsClientProps> = ({title, addNewButton, user,receiptUmFilter,setReceiptSelected}: ProductsClientProps) => {
+export const ReceiptUMTable: React.FC<ProductsClientProps> = ({ title, addNewButton, user, receiptUmFilter, setReceiptSelected, refresh, setRefresh, setExternalReceipt,setCompleteCount,setPendingCount }: ProductsClientProps) => {
   const router = useRouter();
   const userSessionContextType = useContext(UserSessionContext);
   const [receipt, setReceipts] = useState<Receipt[]>([])
-  const [refresh, setRefresh] = useState<number>(0)
+  const [prevUser, setPrevUser] = useState<User | null>(null);
 
-  useEffect(() =>{
-    const fetchUsers = async () =>{
+  const handleDelete = () => {
+    setRefresh(Math.random());
+  };
+
+  useEffect(() => {
+    const fetchReceipts = async () => {
       const selectedCompany = userSessionContextType.userSession?.selectedCompany ? userSessionContextType.userSession?.selectedCompany : '';
-      const receipt = await receipListByRecipientAction(user?.uuid,selectedCompany,receiptUmFilter?.dateRange,receiptUmFilter?.pending,receiptUmFilter?.complete)  
-      setReceipts(receipt)
+      const { receiptList, receiptCountCharged, receiptCountPending, error } = await receipListByRecipientAction(user?.uuid, selectedCompany, receiptUmFilter?.dateRange, receiptUmFilter?.pending, receiptUmFilter?.complete);
+      setReceipts(receiptList);
+      setExternalReceipt(receiptList);
 
-    }
-    fetchUsers()
-  },[userSessionContextType.userSession, receiptUmFilter,user, refresh])
-
+      if (!error || (user?.uuid !== prevUser?.uuid)) {
+        setPendingCount(receiptCountPending);
+        setCompleteCount(receiptCountCharged);
+        setPrevUser(user);
+      }
+    };
+    fetchReceipts();
+  }, [userSessionContextType.userSession, receiptUmFilter, user, refresh]);
 
   return (
     <>
@@ -50,14 +66,16 @@ export const ReceiptUMTable: React.FC<ProductsClientProps> = ({title, addNewButt
         <CardTitle
           title={``}
         >{title}</CardTitle>
-        { addNewButton ?
-        <NewReceiptTabButton user={user} setRefresh={setRefresh}></NewReceiptTabButton> : <></>}
+        {addNewButton ?
+          <NewReceiptTabButton user={user} setRefresh={setRefresh}></NewReceiptTabButton> : <></>}
       </div>
-      <DataTableReceiptUM 
-        columns={columns} 
+      <DataTableReceiptUM
+        columns={columns(handleDelete)}
         data={receipt}
         setReceiptSelected={setReceiptSelected}
-        /*setUserRowSelected={setUserRowSelected}*//>
+        onDelete={handleDelete} // Pass the callback to update the receipt list
+      /*setUserRowSelected={setUserRowSelected}*/
+      />
     </>
   );
 };

@@ -29,10 +29,13 @@ import { Dispatch, SetStateAction } from "react"
 
 interface Props {
   user: User | null,
-  setReceiptTypeSelected: Dispatch<SetStateAction<ReceiptType | null>>
+  setReceiptTypeSelected: Dispatch<SetStateAction<ReceiptType | null>>,
+  preSelectUser?: boolean,
+  setValueTMP?: string 
+
 }
 
-export function ComboboxReceiptType({user, setReceiptTypeSelected}: Props) {
+export function ComboboxReceiptType({user, setReceiptTypeSelected, preSelectUser = true, setValueTMP}: Props) {
   const [open, setOpen] = React.useState(false)
   const [defaultCompany, setDefaultCompany] = React.useState("")
   const [receiptTypeData, setReceiptTypeData] = React.useState<ReceiptType[]>()
@@ -48,15 +51,19 @@ export function ComboboxReceiptType({user, setReceiptTypeSelected}: Props) {
           setDefaultCompany(defaultCompany)
           const receiptList = await receiptTypeListUmAction(defaultCompany)
           setReceiptTypeData(receiptList)
-          const exist = receiptList.some((receiptType) =>{
-            return receiptType.uuid === user?.userCompany?.[0].receiptType?.uuid
-          })
-          setValue(exist ? user?.userCompany?.[0]?.receiptType?.uuid ?? '' : '');
-          if(exist){
-            const userReceipt = receiptList.find((receipt) => {
-              return receipt.uuid == user?.userCompany?.[0]?.receiptType?.uuid
+          if(preSelectUser){
+            const exist = receiptList.some((receiptType) =>{
+              return receiptType.uuid === user?.userCompany?.[0].receiptType?.uuid
             })
-            setReceiptTypeSelected(userReceipt ? userReceipt : null)
+            setValue(exist ? user?.userCompany?.[0]?.receiptType?.uuid ?? '' : '');
+            if(exist){
+              const userReceipt = receiptList.find((receipt) => {
+                return receipt.uuid == user?.userCompany?.[0]?.receiptType?.uuid
+              })
+              setReceiptTypeSelected(userReceipt ? userReceipt : null)
+            }
+          }else{
+            setValue(setValueTMP ?? '');
           }
         }
     }
@@ -120,7 +127,7 @@ export function ComboboxReceiptType({user, setReceiptTypeSelected}: Props) {
             <CommandGroup>
               <CommandItem
                 key="custom"
-                value=""
+                value={undefined}
                 onSelect={() => handleSelect(null)}
               >
                 <Check

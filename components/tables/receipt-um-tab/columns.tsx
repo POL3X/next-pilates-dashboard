@@ -6,7 +6,7 @@ import { Receipt } from '@/constants/Receipt/Receipt';
 import { Badge } from '@/components/ui/badge';
 import { monthNames } from '@/constants/MonthNames';
 
-export const columns: ColumnDef<Receipt>[] = [
+export const columns: (onDelete: () => void) => ColumnDef<Receipt>[] = (onDelete) => [
   {
     id: 'select',
     cell: ({ row, table }) => (
@@ -45,7 +45,6 @@ export const columns: ColumnDef<Receipt>[] = [
     header: 'ESTADO',
     cell: ({row}) => {
       const receipt = row.original
-      console.log(receipt.status)
       if(receipt.status == 'PENDING'){
         return <Badge className='bg-blue-200 text-blue-800'>Pendiente</Badge>
       }else{
@@ -59,7 +58,7 @@ export const columns: ColumnDef<Receipt>[] = [
       <div
         onClick={(event) => event.stopPropagation()} // Evita que el clic en el botón de acciones seleccione la fila
       >
-        <CellAction data={row.original} />
+        <CellAction data={row.original} onDelete={onDelete} />
       </div>
     )
   }
