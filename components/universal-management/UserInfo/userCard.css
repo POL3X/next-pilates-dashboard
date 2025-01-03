@@ -1,0 +1,22 @@
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #a0aec0; /* Gray color */
+  border-radius: 10px;
+  border: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #718096; /* Darker gray on hover */
+}
+
+.no-select {
+  user-select: none;
+  cursor: pointer;
+}

@@ -62,7 +62,7 @@ export function ColumnActions({
     <>
       <div className='flex flex-row justify-between w-[100%]'>
         <div className='flex items-center'>
-           <p>{name + ' - ' + group.startTime.toString().slice(0, 5) + ' - ' + group.category?.name} </p>
+           <p>{group.startTime.toString().slice(0, 5) + ' - ' + name + ' - ' + group.category?.name} </p>
           </div>
 
         <div className='flex flex-row'>

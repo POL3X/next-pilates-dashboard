@@ -52,7 +52,7 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
     }
     return (
         <>
-            <div className="flex flex-row gap-2 ">
+            <div className="flex flex-col gap-2 ">
                 {userUserAttributeList?.map((uuA, index) => {
                     return (<>
                         <UserAttributeItem key={index + uuA.userUuid} userUserAttribute={uuA} companyUuid={userSessionContextType.userSession?.selectedCompany} setRefresh={setRefresh}></UserAttributeItem>

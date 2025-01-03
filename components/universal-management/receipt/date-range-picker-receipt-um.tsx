@@ -57,7 +57,7 @@ export function CalendarDateRangePickerReceiptUm({
                 format(date.from, 'LLL dd, y', { locale: es })
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Selecciona un rango</span>
             )}
           </Button>
         </PopoverTrigger>

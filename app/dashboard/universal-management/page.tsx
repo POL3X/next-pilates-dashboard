@@ -36,6 +36,14 @@ export default function Page() {
     const userSessionContextType = useContext(UserSessionContext)
     const handleEdit = () => {
         setIsEditing(!isEditing)
+        setUserInfo({
+            name: user?.name || '',
+            shortName: user?.shortName || '',
+            shortSurname: user?.shortSurname || '',
+            email: user?.email || '',
+            phone: user?.phoneNumber || '',
+            status: user?.status || 'ENABLE',
+          });
     }
     const [user, setUser] = useState<User | null>(null)
 
@@ -80,18 +88,18 @@ export default function Page() {
                 </Card>
                 <div className="grid grid-cols-1 grid-rows-[1fr_3fr] gap-2">
                     <Card className="w-full ">
-                        <CardHeader className='pb-2 w-[420px] '>
+                        <CardHeader className='pb-2 w-[50%] '>
                             <div className='flex flex-row justify-between items-center'>
                                 <CardTitle>Información del usuario</CardTitle>
                                 {isEditing ? (
-                                    <>
+                                    <div>
                                         <Button variant="ghost" size="icon" onClick={handleEdit}>
                                             <XIcon className="h-4 w-4" />
                                         </Button>
                                         <Button variant="ghost" size="icon" onClick={onClickSaveUser} style={{ marginTop: "0" }}>
                                             <CheckIcon className="h-4 w-4" />
                                         </Button>
-                                    </>
+                                    </div>
                                 ) : (
                                     <Button variant="ghost" size="icon" onClick={handleEdit}>
                                         <PencilIcon className="h-4 w-4" />

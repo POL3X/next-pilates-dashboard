@@ -37,7 +37,7 @@ export function UserAttributeItem({ userUserAttribute, companyUuid, setRefresh}:
     }
 
     return (<>
-        <Card className="w-[300px]">
+        <Card className="w-[100%]">
             <CardHeader className="flex flex-row justify-end p-0">
                 {isEditing ?
                     <Button variant="ghost" size="icon" onClick={()=>{
