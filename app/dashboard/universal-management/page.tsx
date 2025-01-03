@@ -17,10 +17,12 @@ import UserSessionContext from '@/components/layout/context/user-session';
 import { UniversalManagementClientTable } from '@/components/tables/universal-management/UM-client-table';
 import UserCard from '@/components/universal-management/UserInfo/userCard';
 import { CheckIcon } from '@radix-ui/react-icons';
-import { PencilIcon } from 'lucide-react';
+import { PencilIcon, XIcon } from 'lucide-react';
 import { userInfoUMAction } from '@/actions/universal-management/userInfoUMAction';
 import { ReceiptTab } from '@/components/universal-management/receipt/receipt-tab';
 import { GroupTab } from '@/components/universal-management/groups/group-tab';
+import { editUserInfoAction } from '@/actions/universal-management/editUserInfoAction';
+import { UserInfo } from '@/constants/User/UserInfo';
 
 const breadcrumbItems = [
     { title: 'Dashboard', link: '/dashboard' },
@@ -30,15 +32,16 @@ export default function Page() {
     const [isEditing, setIsEditing] = useState(false)
     const [userRowSelected, setUserRowSelected] = useState<User | null>(null)
     const [refresh, setRefresh] = useState<number>(0);
+    const [userInfo, setUserInfo] = useState<UserInfo>({name: '', email: '', phone: '', status: 'ENABLE'})
     const userSessionContextType = useContext(UserSessionContext)
     const handleEdit = () => {
         setIsEditing(!isEditing)
     }
     const [user, setUser] = useState<User | null>(null)
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchUserInfo = async () => {
-            if(userRowSelected == null || userSessionContextType.userSession == null || userSessionContextType.userSession.selectedCompany == undefined){
+            if (userRowSelected == null || userSessionContextType.userSession == null || userSessionContextType.userSession.selectedCompany == undefined) {
                 return
             }
             const userInfo = await userInfoUMAction(userRowSelected?.uuid, userSessionContextType.userSession.selectedCompany)
@@ -47,7 +50,23 @@ export default function Page() {
         fetchUserInfo()
     }, [userRowSelected, refresh])
 
-
+      useEffect(() => {
+        setUserInfo({
+          name: user?.name || '',
+          shortName: user?.shortName || '',
+          shortSurname: user?.shortSurname || '',
+          email: user?.email || '',
+          phone: user?.phoneNumber || '',
+          status: user?.status || 'ENABLE',
+        });
+      }, [user]);
+      const onClickSaveUser = async () => {
+        if (userSessionContextType.userSession && user) {
+                await editUserInfoAction(user.uuid, userInfo, userSessionContextType.userSession.selectedCompany);
+                setIsEditing(false);
+                setRefresh(Math.random());
+        }
+    }
     return (
         <PageContainer scrollable={true}>
             <Breadcrumbs items={breadcrumbItems} />
@@ -61,15 +80,26 @@ export default function Page() {
                 </Card>
                 <div className="grid grid-cols-1 grid-rows-[1fr_3fr] gap-2">
                     <Card className="w-full ">
-                        <CardHeader className='pb-2'>
-                           <div className='flex flex-row justify-between'>
-                           <CardTitle>Información del usuario</CardTitle>
-                            <Button variant="ghost" size="icon" onClick={handleEdit}>
-                                {isEditing ? <CheckIcon className="h-4 w-4" /> : <PencilIcon className="h-4 w-4" />}
-                            </Button></div> 
+                        <CardHeader className='pb-2 w-[420px] '>
+                            <div className='flex flex-row justify-between items-center'>
+                                <CardTitle>Información del usuario</CardTitle>
+                                {isEditing ? (
+                                    <>
+                                        <Button variant="ghost" size="icon" onClick={handleEdit}>
+                                            <XIcon className="h-4 w-4" />
+                                        </Button>
+                                        <Button variant="ghost" size="icon" onClick={onClickSaveUser} style={{ marginTop: "0" }}>
+                                            <CheckIcon className="h-4 w-4" />
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <Button variant="ghost" size="icon" onClick={handleEdit}>
+                                        <PencilIcon className="h-4 w-4" />
+                                    </Button>
+                                )}</div>
                         </CardHeader>
                         <CardContent>
-                            {userRowSelected ? <UserCard isEditing={isEditing} user={user} setRefresh={setRefresh}></UserCard> : <p>Seleccione un Usuario</p>}
+                            {userRowSelected ? <UserCard isEditing={isEditing} user={user} setRefresh={setRefresh} userInfo={userInfo} setUserInfo={setUserInfo}></UserCard> : <p>Seleccione un Usuario</p>}
                         </CardContent>
                     </Card>
                     <Card className="w-full ">
@@ -82,10 +112,10 @@ export default function Page() {
                                     </TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="receipt" className="space-y-4">
-                                {userRowSelected ?<ReceiptTab user={user}></ReceiptTab>:<p>Seleccione un Usuario</p> }
+                                    {userRowSelected ? <ReceiptTab user={user}></ReceiptTab> : <p>Seleccione un Usuario</p>}
                                 </TabsContent>
                                 <TabsContent value="groups" className="space-y-4">
-                                {userRowSelected ?<GroupTab userSessionContextType={userSessionContextType} userRowSelected={userRowSelected}></GroupTab>:<p>Seleccione un Usuario</p> }
+                                    {userRowSelected ? <GroupTab userSessionContextType={userSessionContextType} userRowSelected={userRowSelected}></GroupTab> : <p>Seleccione un Usuario</p>}
                                 </TabsContent>
                             </Tabs>
                         </CardContent>

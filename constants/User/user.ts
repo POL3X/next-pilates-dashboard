@@ -5,6 +5,8 @@ import { UserUserAttribute } from "../UserUserAttribute/userUserAttribute";
 export type User = {
     uuid: string;
     name: string;
+    shortName?: string;
+    shortSurname?: string;
     email: string;
     passwordHash?: string;
     role: 'ADMIN' | 'USER';
