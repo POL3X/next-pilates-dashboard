@@ -116,7 +116,6 @@ export function ReceiptTab({ user }: Props) {
       receiptSelected.receiptTypeUuid = receiptTypeSelected == null ? undefined : receiptTypeSelected.uuid;
       receiptSelected.receiptType = receiptTypeSelected == null ? undefined : receiptTypeSelected;
       const receiptT = await editReceiptAction(receiptSelected, receiptSelected.companyUuid)
-      console.log(receiptT)
       setReceiptSelected(receiptT);
       setReceiptTypeName(receiptT.receiptType?.name ?? "Personalizado");
       setIsEditing(false);

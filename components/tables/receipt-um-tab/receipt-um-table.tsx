@@ -74,7 +74,7 @@ export const ReceiptUMTable: React.FC<ProductsClientProps> = ({ title, addNewBut
         data={receipt}
         setReceiptSelected={setReceiptSelected}
         onDelete={handleDelete} // Pass the callback to update the receipt list
-      /*setUserRowSelected={setUserRowSelected}*/
+        onDeselect={()=>{}}   
       />
     </>
   );

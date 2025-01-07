@@ -28,13 +28,15 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   setReceiptSelected: Dispatch<SetStateAction<Receipt | undefined>>;
   onDelete: () => void; // Add the onDelete prop
+  onDeselect: () => void; // Add the onDeselect prop
 }
 
 export function DataTableReceiptUM<TData, TValue>({
   columns,
   data,
   setReceiptSelected,
-  onDelete
+  onDelete,
+  onDeselect
 }: DataTableProps<TData, TValue>) {
 
   const table = useReactTable({
@@ -60,7 +62,8 @@ export function DataTableReceiptUM<TData, TValue>({
       table.getRow(rowId).toggleSelected(true); // Selecciona la fila actual
       setReceiptSelected(table.getRow(rowId).original as unknown as Receipt); // Actualiza el estado del usuario seleccionado
     } else {
-      //setUserRowSelected(null); // Deselecciona el usuario si la fila ya estaba seleccionada
+      onDeselect(); // Notify that the row was deselected
+      setReceiptSelected(undefined); // Clear the selected user
     }
   };
 
