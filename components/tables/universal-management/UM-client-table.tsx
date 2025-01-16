@@ -27,7 +27,8 @@ export const UniversalManagementClientTable: React.FC<ProductsClientProps> = ({ 
   });
   const [pageCount, setPageCount] = useState<number>(1)
   const [totalUsers, setTotalUsers] = useState<number>(0)
-  const [nameFilter, setNameFilter] = useState<string>('')
+  const [nameFilter, setNameFilter] = useState<string>('');
+  const [refresh, setRefresh] = useState<boolean>(false)
 
   const [ showCreateUserDialog ,setShowCreateUserDialog] = useState<boolean>(false)
 
@@ -35,15 +36,12 @@ export const UniversalManagementClientTable: React.FC<ProductsClientProps> = ({ 
     const fetchUsers = async () =>{
       const selectedCompany = userSessionContextType.userSession?.selectedCompany ? userSessionContextType.userSession?.selectedCompany : ''
       const {usersFormatted, total} = await userListUMAction(nameFilter,selectedCompany,pageIndex,pageSize)
-      console.log(usersFormatted)
       setUsers(usersFormatted)
       setTotalUsers(total)
       setPageCount(Math.ceil(totalUsers / pageSize))
     }
     fetchUsers()
-  },[pageIndex, nameFilter, userSessionContextType.userSession])
-
-  
+  },[pageIndex, nameFilter, userSessionContextType.userSession, refresh])
 
   return (
     <>
@@ -59,7 +57,7 @@ export const UniversalManagementClientTable: React.FC<ProductsClientProps> = ({ 
         >
           <Plus className="mr-2 h-4 w-4" /> Usuario
         </Button>
-        <CreateUserDialog showCreateUserDialog={showCreateUserDialog} setShowCreateUserDialog={setShowCreateUserDialog} setUserRowSelected={setUserRowSelected}></CreateUserDialog>
+        <CreateUserDialog showCreateUserDialog={showCreateUserDialog} setShowCreateUserDialog={setShowCreateUserDialog} setUserRowSelected={setUserRowSelected} setRefresh={setRefresh}></CreateUserDialog>
       </div>
       <Separator />
       <DataTableUniversalManagement searchKey="name" 

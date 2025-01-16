@@ -16,6 +16,8 @@ import { ReceiptType } from "@/constants/ReceiptType/ReceiptType";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { editReceiptAction } from "@/actions/universal-management/receipt/editReceiptAction";
+import { PrintReceiptButton } from "./buttons/print-receipt-button";
+import { sendReceiptMailAction } from "@/actions/universal-management/sendReceiptMailAction";
 
 export interface ReceiptUmFilter {
   dateRange?: DateRange;
@@ -122,6 +124,12 @@ export function ReceiptTab({ user }: Props) {
       setRefresh(Math.random());
     }
   };
+
+  const sendReceiptMail= async () => {
+    if (receiptSelected) {
+      await sendReceiptMailAction(receiptSelected.uuid, companyReceipt?.uuid)
+    }
+  } 
 
   return (
     <>
@@ -248,9 +256,12 @@ export function ReceiptTab({ user }: Props) {
                       <Button onClick={() => chargeReceipt()} disabled={isEditing}>Cobrar</Button>
                     </> :
                     <>
-                      <Button disabled={isEditing}>Imprimir</Button>
-                      <Button disabled={isEditing}>Email</Button>
-                      <Button disabled={isEditing}>Whatsapp</Button>
+                      {
+                        companyReceipt && user ? <>
+                      <PrintReceiptButton receiptData={receiptSelected} companyReceipt={companyReceipt} user={user} disabled={isEditing} />
+                      <Button disabled={isEditing} onClick={sendReceiptMail}>Email</Button>
+                      <Button disabled={true}>Whatsapp</Button></> : <></>
+                      }
                     </>
                 }
               </div>

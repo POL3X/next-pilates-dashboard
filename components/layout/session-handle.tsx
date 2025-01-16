@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import UserSessionContext from './context/user-session';
 import { UserSession } from '@/types/auth';
-import { getDefaultCompanyCookie } from '@/actions/cookies/cookiesAction';
+import { getDefaultCompanyCookie, setCookieDefaultCompany } from '@/actions/cookies/cookiesAction';
 
 function isUserSession(obj: any): obj is UserSession {
   return obj && typeof obj === 'object' && 'uuid' in obj && 'email' in obj;
@@ -27,11 +27,12 @@ export default function SessionHandle({
         if (session.uuid != '' || session != null) {
           if(session.company.length < 2){
             session.selectedCompany = session.company[0].uuid
+            setCookieDefaultCompany(session.company[0].uuid);
           }else{
             const defaultCompany = await getDefaultCompanyCookie()
             const existCompany = session.company.some(company => company.uuid === defaultCompany?.value);
             session.selectedCompany = existCompany ? defaultCompany?.value : session.company[0].uuid
-          }
+                    }
           setUserSession(session);
         } else {
           throw new Error('Invalid session data');

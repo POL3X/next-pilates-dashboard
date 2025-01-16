@@ -21,7 +21,7 @@ import {
 import { useSidebar } from "@/hooks/useSidebar"
 import { Icons } from "@/components/icons"
 import UserSessionContext from "@/components/layout/context/user-session"
-import { getDefaultCompanyCookie } from "@/actions/cookies/cookiesAction"
+import { setCookieDefaultCompany } from "@/actions/cookies/cookiesAction"
 
 export function ComboboxNavbar() {
   const [open, setOpen] = React.useState(false)
@@ -47,11 +47,15 @@ export function ComboboxNavbar() {
       if (currentValue !== value) {
         // Permite la selección si es un item diferente
         setValue(currentValue);
-      } else if (userSessionContextType.userSession.company.length > 1) {
-        // Si hay más de un elemento en la lista, permite cambiar el valor a vacío
-        setValue("");
+        userSessionContextType.setUserSession((prevSession) => {
+          if (!prevSession) return null;
+          return {
+            ...prevSession,
+            selectedCompany: currentValue,
+          };
+        });
+          setCookieDefaultCompany(currentValue);
       }
-  
       // Cierra el Popover
       setOpen(false);
     }

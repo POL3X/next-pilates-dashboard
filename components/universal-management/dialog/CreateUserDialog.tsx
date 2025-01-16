@@ -18,10 +18,10 @@ interface Prop {
     showCreateUserDialog: boolean,
     setShowCreateUserDialog: Dispatch<SetStateAction<boolean>>
     setUserRowSelected: Dispatch<SetStateAction<User | null>>
-
+    setRefresh: Dispatch<SetStateAction<boolean>>
 }
 
-export function CreateUserDialog({ showCreateUserDialog, setShowCreateUserDialog, setUserRowSelected }: Prop) {
+export function CreateUserDialog({ showCreateUserDialog, setShowCreateUserDialog, setUserRowSelected, setRefresh }: Prop) {
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
@@ -66,6 +66,7 @@ export function CreateUserDialog({ showCreateUserDialog, setShowCreateUserDialog
             email: '',
             phoneNumber: '' })
         handleDialogChange(false)
+        setRefresh(true)
     }
 
     return (

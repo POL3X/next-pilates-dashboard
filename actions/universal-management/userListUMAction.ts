@@ -21,7 +21,7 @@ export async  function userListUMAction(name:string, companyUuid: string, pageIn
           
           if(201 != messageResponse.status){
             const {error} = await messageResponse.json();
-            throw new Error(error);
+            return {usersFormatted: [], total:0};
           }
 
           const {usersFormatted, total}: {usersFormatted:User[], total:number} = await messageResponse.json();
