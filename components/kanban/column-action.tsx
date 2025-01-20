@@ -22,12 +22,10 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { Task, useTaskStore } from '@/lib/store';
 import { UniqueIdentifier } from '@dnd-kit/core';
-import { Input } from '../ui/input';
-import { Icons } from '../icons';
+
 import { ComboboxPopoverAddUser } from '../ui/custom/Kanban/combobox/ComboBoxPopoverAddUser';
 import { ComboboxGroupGroupAttibute } from '../ui/custom/Kanban/combobox/combobox-group-attribute';
 import { Group } from '@/constants/Group/group';
-import { CreateGroupForm } from './new-group-dialog';
 import EditGroupKanbanDialog from './dialog/edit-group';
 import { useContext } from 'react';
 import KanbanRefreshContext from '../layout/context/kanban-refresh-context';
@@ -45,11 +43,9 @@ export function ColumnActions({
   setRefresh: React.Dispatch<React.SetStateAction<number>>,
   group: Group
 }) {
-  const [open, setIsOpen] = React.useState(false);
   const [name, setName] = React.useState(title);
   const [editGroupForm, setEditGroupForm] = React.useState<Group>(group)
   const [openEditModal, setOpenEditModal] = React.useState<boolean>(false)
-  const updateCol = useTaskStore((state) => state.updateCol);
   const removeCol = useTaskStore((state) => state.removeCol);
   const [editDisable, setIsEditDisable] = React.useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);

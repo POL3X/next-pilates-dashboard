@@ -1,14 +1,12 @@
 "use client";
 
 
-import { AlertModal } from "@/components/modal/alert-modal";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { User } from "@/constants/User/user";
-import { Edit, MoreHorizontal, Plus, Trash } from "lucide-react";
+import {  Plus} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
-import CreateUserAttribute from "./create-user-attribute";
 import ReceiptTypeForm from "./receipt-type-form";
 
 export interface ReceiptTypeFrom {

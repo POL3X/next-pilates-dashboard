@@ -5,8 +5,6 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { CheckIcon, PencilIcon } from "lucide-react"
 import { Icons } from "@/components/icons"
-import { editUserUserAttributeAction } from "@/actions/universal-management/userAttribute/editUserUserAttributeAction"
-import { deleteUserUserAttributeAction } from "@/actions/universal-management/userAttribute/deleteUserUserAttributeAction"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { toast } from "@/components/ui/use-toast"
 

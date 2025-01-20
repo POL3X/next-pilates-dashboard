@@ -124,7 +124,7 @@ export const navItems: NavItem[] = [
     label: 'Gestión Universal'
   },
   {
-    title: 'Kanban',
+    title: 'Grupos',
     href: '/dashboard/kanban',
     icon: 'kanban',
     label: 'kanban'
@@ -136,9 +136,9 @@ export const navItems: NavItem[] = [
     label: 'settings'
   },
   {
-    title: 'Login',
+    title: 'Cerrar Sesión',
     href: '/',
     icon: 'login',
-    label: 'login'
+    label: 'Cerrar Sesión'
   }
 ];

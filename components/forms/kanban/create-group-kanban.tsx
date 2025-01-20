@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Label } from "../../ui/label";
 import { User } from "@/constants/User/user";
 import { Button } from "../../ui/button";
@@ -38,7 +38,6 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
 
     const onClickCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault(); // Evita que la página se recargue
-        console.log(user)
         if(startTimePicker != undefined && durationTimePicker != undefined){
             const newGroup: Group = {
                 uuid: '',
@@ -51,7 +50,6 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
                 maxUsers: createGroupForm.maxUsers, // Número máximo de usuarios permitido
                 userGroup: []
             };
-            console.log(newGroup.startTime.toUTCString())
             const groupResponse = await createKanbanGroupAction(newGroup)
             addCol(daySelected, groupResponse)
         }

@@ -9,7 +9,6 @@ import {
     Command,
     CommandEmpty,
     CommandGroup,
-    CommandInput,
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
@@ -18,8 +17,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { useSidebar } from "@/hooks/useSidebar"
-import { Icons } from "@/components/icons"
 import { Dispatch, SetStateAction } from "react"
 import { CompanyRole } from "@/constants/CompanyRole/CompanyRole"
 import { companyRolList } from "@/constants/CompanyRole/company-rol-type"
@@ -32,8 +29,6 @@ interface Props {
 export function ComboboxUserCompanyRol({ userCompanyRolSelected ,setUserCompanyRolSelected }: Props) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
-    const { isMinimized, toggle } = useSidebar();
-    const Icon = Icons['dashboard'];
 
     const handleSelect = (currentValue: string | null) => {
         if (currentValue == null) {

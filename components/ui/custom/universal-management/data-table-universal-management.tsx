@@ -85,7 +85,7 @@ export function DataTableUniversalManagement<TData, TValue>({
   return (
     <>
       <Input
-        placeholder={`Search ${searchKey}...`}
+        placeholder={`Buscar por ${searchKey}...`}
         value={nameFilter ?? ''}
         onChange={(event) =>
           onSearchChangeUsername(event.target.value)

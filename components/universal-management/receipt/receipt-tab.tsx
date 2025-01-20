@@ -1,10 +1,10 @@
 import { ReceiptUMTable } from "@/components/tables/receipt-um-tab/receipt-um-table";
 import { Button } from "@/components/ui/button";
 import { User } from "@/constants/User/user";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CalendarDateRangePickerReceiptUm } from "./date-range-picker-receipt-um";
-import { Receipt } from "@/constants/Receipt/Receipt";
+import { getPaymentMethodLabel, PaymentMethod, Receipt } from "@/constants/Receipt/Receipt";
 import { Separator } from "@/components/ui/separator";
 import { Company } from "@/constants/Company/Company";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { editReceiptAction } from "@/actions/universal-management/receipt/editReceiptAction";
 import { PrintReceiptButton } from "./buttons/print-receipt-button";
 import { sendReceiptMailAction } from "@/actions/universal-management/sendReceiptMailAction";
+import { ComboboxPaymentMethod } from "@/components/ui/custom/universal-management/combobox/combobox-payment-method";
 
 export interface ReceiptUmFilter {
   dateRange?: DateRange;
@@ -37,11 +38,11 @@ export function ReceiptTab({ user }: Props) {
   const [receiptTypeName, setReceiptTypeName] = useState<string>(receiptSelected?.receiptType?.name ?? "Personalizado");
   const [refresh, setRefresh] = useState<number>(0);
   const [externalReceipt, setExternalReceipt] = useState<Receipt[] | undefined>(undefined);
+  const [receiptPaymentMethod, setReceiptPaymentMethod] = useState<PaymentMethod | undefined>(receiptSelected?.paymentMethod ?? undefined);
+
   const [pendingCount, setPendingCount] = useState<number>(0);
   const [completeCount, setCompleteCount] = useState<number>(0);
   const [isEditing, setIsEditing] = useState(false);
-  const [prevUser, setPrevUser] = useState<User | null>(null);
-  const [prevDateRange, setPrevDateRange] = useState<DateRange | undefined>(undefined);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -94,6 +95,7 @@ export function ReceiptTab({ user }: Props) {
     setCompanyReceipt(company?.company);
     setReceiptTypeSelected(receiptSelected?.receiptType ?? null);
     setReceiptTypeName(receiptSelected?.receiptType?.name ?? "Personalizado");
+    setReceiptPaymentMethod(receiptSelected?.paymentMethod ?? PaymentMethod.CASH)
     if (receiptSelected) {
       setConcept(receiptSelected.concept?.toString());
       setPrice(receiptSelected.amount?.toString());
@@ -117,7 +119,9 @@ export function ReceiptTab({ user }: Props) {
       receiptSelected.concept = concept;
       receiptSelected.receiptTypeUuid = receiptTypeSelected == null ? undefined : receiptTypeSelected.uuid;
       receiptSelected.receiptType = receiptTypeSelected == null ? undefined : receiptTypeSelected;
+      receiptSelected.paymentMethod = receiptPaymentMethod;
       const receiptT = await editReceiptAction(receiptSelected, receiptSelected.companyUuid)
+      console.log(receiptT)
       setReceiptSelected(receiptT);
       setReceiptTypeName(receiptT.receiptType?.name ?? "Personalizado");
       setIsEditing(false);
@@ -133,10 +137,11 @@ export function ReceiptTab({ user }: Props) {
 
   return (
     <>
-      <div className="flex flex-row gap-2 ">
+      <div className="flex flex-row max-[1700px]:flex-col gap-2 ">
         <div className="flex-1 w-full">
-          <div className="flex flex-row justify-between ">
+          <div className="flex flex-row justify-between max-[1040px]:flex-col max-[1040px]:gap-2">
             <CalendarDateRangePickerReceiptUm date={receiptFilters?.dateRange} setReceiptFilters={setReceiptFilters} />
+            <div>
             <Button
               variant={receiptFilters?.pending ? "default" : "outline"}
               onClick={handlePendingClick}
@@ -149,9 +154,11 @@ export function ReceiptTab({ user }: Props) {
             >
               {"Completados: " + completeCount}
             </Button>
+            </div>
+           
           </div>
           <ReceiptUMTable
-            title={"Recibos"}
+            title={"Recibos (" + externalReceipt?.length +")"}
             addNewButton={true}
             user={user}
             receiptUmFilter={receiptFilters}
@@ -166,7 +173,7 @@ export function ReceiptTab({ user }: Props) {
           {receiptSelected == undefined ? <></> :
             <div className="flex flex-col gap-3 p-4 pt-0">
               <div>
-                <h1 >Recibo</h1>
+                <h1>Recibo</h1>
                 <p className="text-[8px]">{receiptSelected.uuid}</p>
               </div>
               <div className="flex flex-row justify-between">
@@ -178,8 +185,6 @@ export function ReceiptTab({ user }: Props) {
                   <p>{companyReceipt?.address}</p>
                 </div>
                 <div className="">
-
-
                   <h1 className="pb-2">Usuario</h1>
                   <p>{user?.name}</p>
                   <p>{user?.email}</p>
@@ -217,13 +222,16 @@ export function ReceiptTab({ user }: Props) {
                   <div className="flex flex-col justify-between">
                     {!isEditing ? (
                       <div>
+                        <p>{"Método de pago: " + getPaymentMethodLabel(receiptPaymentMethod)}</p>
                         <p>{"Tipo de recibo: " + receiptTypeName}</p>
                         <p>{"Concepto: " + (receiptSelected.concept ?? '')}</p>
                         <p>{"Precio: " + receiptSelected.amount + " €"}</p>
                       </div>
                     ) : (
                       <>
-                        <Label htmlFor="">Tipo de Recibo</Label>
+                        <Label htmlFor="paymentMethod">Método de pago</Label>
+                        <ComboboxPaymentMethod receiptPaymentMethod={receiptPaymentMethod ?? PaymentMethod.CASH} setReceiptPaymentMethod={setReceiptPaymentMethod}></ComboboxPaymentMethod>
+                        <Label htmlFor="receiptType">Tipo de Recibo</Label>
                         <ComboboxReceiptType user={user} setReceiptTypeSelected={setReceiptTypeSelected} setValueTMP={receiptSelected.receiptType == undefined ? "" : receiptSelected.receiptType.uuid} preSelectUser={false} />
                         <Label htmlFor="concept">Concepto</Label>
                         <Input
@@ -259,7 +267,7 @@ export function ReceiptTab({ user }: Props) {
                       {
                         companyReceipt && user ? <>
                       <PrintReceiptButton receiptData={receiptSelected} companyReceipt={companyReceipt} user={user} disabled={isEditing} />
-                      <Button disabled={isEditing} onClick={sendReceiptMail}>Email</Button>
+                      {user.email != undefined ?  <Button disabled={isEditing} onClick={sendReceiptMail}>Email</Button> : <></>}
                       <Button disabled={true}>Whatsapp</Button></> : <></>
                       }
                     </>

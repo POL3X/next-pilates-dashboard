@@ -2,13 +2,11 @@
 
 
 import NewReceiptUmForm from "@/components/forms/new-receipt-tab-um/new-receipt-um-form";
-import { AlertModal } from "@/components/modal/alert-modal";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent,DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { monthNames } from "@/constants/MonthNames";
 import { User } from "@/constants/User/user";
-import { Edit, MoreHorizontal, Plus, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Plus} from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 
 export interface ReceiptForm {
@@ -29,7 +27,6 @@ export function NewReceiptTabButton({user, setRefresh}:Props) {
     return new Date(today.getFullYear(), today.getMonth(), 1);
   };
 
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [receiptForm, setReceiptForm] = useState<ReceiptForm>({
     date: getFirstDayOfCurrentMonth(),
@@ -37,10 +34,8 @@ export function NewReceiptTabButton({user, setRefresh}:Props) {
     receipTypeUuid: "",
   });
 
-  const router = useRouter();
 
   // Función para manejar la confirmación
-  const onConfirm = async () => {};
 
   // Función para reiniciar el estado del formulario
   const resetReceiptForm = () => {

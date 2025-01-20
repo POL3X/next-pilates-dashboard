@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { loginAction } from '@/actions/auth/loginAction';
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Enter a valid email address' }),
+  email: z.string().email({ message: 'Ingrese un correo valido...' }),
   password: z.string()
     /*.min(8, { message: 'Password must be at least 8 characters long' }) // Longitud mínima
     .max(100, { message: 'Password must not exceed 100 characters' })   // Longitud máxima
@@ -38,7 +38,7 @@ export default function UserAuthForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null); // Estado para manejar errores
   const defaultValues = {
-    email: 'demo@gmail.com'
+    email: ''
   };
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
@@ -65,6 +65,7 @@ export default function UserAuthForm() {
 
   return (
     <>
+      <h2>ControlCore</h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -79,7 +80,7 @@ export default function UserAuthForm() {
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder="Enter your email..."
+                    placeholder="Ingrese su correo..."
                     disabled={loading}
                     {...field}
                   />
@@ -93,11 +94,11 @@ export default function UserAuthForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Contraseña</FormLabel>
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="Enter your password..."
+                    placeholder="Ingrese su contraseña..."
                     disabled={loading}
                     {...field}
                   />
@@ -108,7 +109,7 @@ export default function UserAuthForm() {
           />
 
           <Button disabled={loading} className="ml-auto w-full" type="submit">
-            Continue With Email
+            Login
           </Button>
         </form>
       </Form>

@@ -3,7 +3,6 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { ReceiptForm } from "../../tables/receipt-um-tab/new-receipt-button";
 import { Label } from "../../ui/label";
-import { ComboboxNavbar } from "../../ui/custom/navbar/combobox";
 import { ComboboxReceiptType } from "../../ui/custom/universal-management/combobox/combobox-receipt-type";
 import { User } from "@/constants/User/user";
 import { ReceiptType } from "@/constants/ReceiptType/ReceiptType";
@@ -32,7 +31,6 @@ export default function NewReceiptUmForm({receiptForm, setReceiptForm, user,setO
 
  const onClickCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
   event.preventDefault(); // Evita que la página se recargue
-  console.log(user)
     const newReceipt: Receipt = {
         uuid: '',
         companyUuid: userSessionContextType.userSession?.selectedCompany!,

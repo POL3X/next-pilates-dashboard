@@ -1,6 +1,6 @@
 'use client'
 
-import { SetStateAction, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserSessionContext from "../layout/context/user-session";
 import { UserAttribute } from "@/constants/UserAttribute/userAttribute";
 import { userAttributeListAction } from "@/actions/settings/userAttributeListAction";

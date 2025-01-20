@@ -97,7 +97,7 @@ export function ComboboxReceiptType({user, setReceiptTypeSelected, preSelectUser
   return (
     <Popover open={open} onOpenChange={setOpen}>
      <PopoverTrigger asChild>
-  {!isMinimized ? (
+
     <Button
       variant="outline"
       role="combobox"
@@ -109,16 +109,7 @@ export function ComboboxReceiptType({user, setReceiptTypeSelected, preSelectUser
         : "Personalizado"}
       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
-  ) : (
-    <Button
-      variant="outline"
-      role="combobox"
-      aria-expanded={open}
-      className="flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-    >
-      <Icon />
-    </Button>
-  )}
+
 </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>

@@ -2,9 +2,8 @@ import { Task } from "@/lib/store"
 import { Icons } from "../icons"
 import { Button } from "../ui/button"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog"
-import { id } from "date-fns/locale"
 import { toast } from "../ui/use-toast"
-import { Dispatch, SetStateAction, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { makeActionUserGroupAction } from "@/actions/Kanban/makeActionUserGroupAction"
 import UserSessionContext from "../layout/context/user-session"
 import KanbanRefreshContext from "../layout/context/kanban-refresh-context"
@@ -19,7 +18,6 @@ const  userAction = async (task: Task, action: string, selectedCompany?: string)
 
 export function TaskActions({task}: Props){
     const MoveUpIcon = Icons['arrowUp']
-    const MoveDownIcon = Icons['arrowDown']
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [showOutWaitDialog, setShowOutWaitDialog] = useState(false);
     const userSession = useContext(UserSessionContext)

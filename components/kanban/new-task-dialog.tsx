@@ -26,7 +26,7 @@ export default function NewTaskDialog() {
     const { title, description } = Object.fromEntries(formData);
 
     if (typeof title !== 'string' || typeof description !== 'string') return;
-    addTask(title, description);
+    //addTask(title, description);
   };
 
   return (

@@ -106,9 +106,9 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh, companyUuid 
         <div className='flex flex-row justify-between '>
           <ScrollArea className='pb-3 w-[250px]'>
             <div className='flex flex-row gap-4'>
-              {column.groupGroupAttribute?.map((value) => {
+              {column.groupGroupAttribute?.map((value, index) => {
                 return (
-                  <div className=' flex flex-row items-center gap-1'>
+                  <div key={index} className=' flex flex-row items-center gap-1'>
                     <div
                       className="flex flex-row items-center p-1 rounded"
                       style={{

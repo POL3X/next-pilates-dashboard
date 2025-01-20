@@ -21,7 +21,6 @@ import {
 import { ScrollArea, ScrollBar } from '../../scroll-area';
 import { Receipt } from '@/constants/Receipt/Receipt';
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { CellAction } from '@/components/tables/receipt-um-tab/cell-action';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

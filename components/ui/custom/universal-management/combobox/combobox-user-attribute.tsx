@@ -3,13 +3,11 @@
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
     Command,
     CommandEmpty,
     CommandGroup,
-    CommandInput,
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
@@ -18,13 +16,10 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { useSidebar } from "@/hooks/useSidebar"
-import { Icons } from "@/components/icons"
 import UserSessionContext from "@/components/layout/context/user-session"
 import { User } from "@/constants/User/user"
 import { Dispatch, SetStateAction } from "react"
 import { Category } from "@/constants/Category/category"
-import { categoryListAction } from "@/actions/Kanban/categoryListAction"
 import { UserAttribute } from "@/constants/UserAttribute/userAttribute"
 import { userAttributeListAction } from "@/actions/settings/userAttributeListAction"
 
@@ -40,8 +35,7 @@ export function ComboboxUserAttribute({ user, userAttributeSelected, setUserAttr
     const [defaultCompany, setDefaultCompany] = React.useState("")
     const [userAttributeList, setUserAttributeList] = React.useState<Category[]>()
     const [value, setValue] = React.useState("")
-    const { isMinimized, toggle } = useSidebar();
-    const Icon = Icons['dashboard'];
+
     const userSessionContextType = React.useContext(UserSessionContext)
 
     React.useEffect(() => {

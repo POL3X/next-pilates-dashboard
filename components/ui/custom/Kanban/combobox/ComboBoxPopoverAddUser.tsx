@@ -1,16 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  ArrowUpCircle,
-  CheckCircle2,
-  Circle,
-  HelpCircle,
-  LucideIcon,
-  XCircle,
-} from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -32,11 +23,8 @@ import UserSessionContext from "@/components/layout/context/user-session"
 import { useEffect, useState } from "react"
 import { User } from "@/constants/User/user"
 import { changeUserGroupAction } from "@/actions/Kanban/changeUserGroupAction"
-import { useSortable } from "@dnd-kit/sortable"
 import { Checkbox } from "@/components/ui/checkbox"
-import { eventNames } from "process"
-import { Accordion } from "@/components/ui/accordion"
-import { AccordionItem } from "@radix-ui/react-accordion"
+
 
 
 export function ComboboxPopoverAddUser({taskColumns,groupUuid, setRefresh}:{taskColumns: Task[], groupUuid:string, setRefresh:React.Dispatch<React.SetStateAction<number>>}) {

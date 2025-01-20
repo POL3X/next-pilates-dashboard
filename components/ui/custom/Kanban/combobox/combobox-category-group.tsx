@@ -9,7 +9,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
@@ -21,9 +20,7 @@ import {
 import { useSidebar } from "@/hooks/useSidebar"
 import { Icons } from "@/components/icons"
 import UserSessionContext from "@/components/layout/context/user-session"
-import { getDefaultCompanyCookie } from "@/actions/cookies/cookiesAction"
-import { ReceiptType } from "@/constants/ReceiptType/ReceiptType"
-import { receiptTypeListUmAction } from "@/actions/universal-management/receipt-type/receipt-type-list"
+
 import { User } from "@/constants/User/user"
 import { Dispatch, SetStateAction } from "react"
 import { Category } from "@/constants/Category/category"

@@ -1,24 +1,16 @@
-import { AreaGraph } from '@/components/charts/area-graph';
-import { BarGraph } from '@/components/charts/bar-graph';
-import { PieGraph } from '@/components/charts/pie-graph';
-import { CalendarDateRangePicker } from '@/components/date-range-picker';
 import UserAuthForm from '@/components/forms/user-auth-form';
 import PageContainer from '@/components/layout/page-container';
-import { RecentSales } from '@/components/recent-sales';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-export default function page() {
+export default function Page() {
   return (
     <PageContainer scrollable={false}>
-        <UserAuthForm></UserAuthForm>
+      {/* Contenedor centrado que ocupa el alto completo de la ventana */}
+      <div className="flex items-center justify-center min-h-screen">
+        {/* Contenedor interno con un ancho máximo */}
+        <div className="w-full max-w-md p-4">
+          <UserAuthForm />
+        </div>
+      </div>
     </PageContainer>
   );
 }

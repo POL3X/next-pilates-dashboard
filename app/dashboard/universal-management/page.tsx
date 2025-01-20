@@ -6,13 +6,12 @@ import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User } from '@/constants/User/user';
-import { SetStateAction, useContext, useEffect, useRef, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import UserSessionContext from '@/components/layout/context/user-session';
 import { UniversalManagementClientTable } from '@/components/tables/universal-management/UM-client-table';
 import UserCard from '@/components/universal-management/UserInfo/userCard';

@@ -1,12 +1,10 @@
 "use client";
 
 
-import { AlertModal } from "@/components/modal/alert-modal";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { monthNames } from "@/constants/MonthNames";
 import { User } from "@/constants/User/user";
-import { Edit, MoreHorizontal, Plus, Trash } from "lucide-react";
+import {  Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
 import CreateGroupKanban from "../forms/kanban/create-group-kanban";
@@ -41,7 +39,6 @@ export function NewGroupDialog({user, setRefresh}:Props) {
   const router = useRouter();
 
   // Función para manejar la confirmación
-  const onConfirm = async () => {};
 
   // Función para reiniciar el estado del formulario
   const resetCreateGroupForm = () => {

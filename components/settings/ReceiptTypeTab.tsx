@@ -1,10 +1,6 @@
 'use client'
-import { userAttributeListAction } from "@/actions/settings/userAttributeListAction"
-import { UserAttribute } from "@/constants/UserAttribute/userAttribute"
 import { useState, useContext, useEffect } from "react"
 import UserSessionContext from "../layout/context/user-session"
-import { NewAttributeUserDialog } from "./dialog/new-user-attribute-dialog"
-import { UserAttributeItem } from "./UserAttributeList/user-attribute-list-item"
 import { ReceiptTypeItem } from "./dialog/ReceiptTypeList/receipt-type-list-item"
 import { ReceiptType } from "@/constants/ReceiptType/ReceiptType"
 import { receiptTypeListUmAction } from "@/actions/universal-management/receipt-type/receipt-type-list"

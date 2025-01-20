@@ -61,7 +61,7 @@ export async  function groupListByFiltersAction(groupFilter: GroupFilterUM,compa
           
           if(201 != messageResponse.status){
             const {error} = await messageResponse.json();
-            throw new Error(error);
+            return {groups: [], userGroups:[]};
           }
 
   

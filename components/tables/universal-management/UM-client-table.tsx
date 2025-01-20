@@ -60,7 +60,7 @@ export const UniversalManagementClientTable: React.FC<ProductsClientProps> = ({ 
         <CreateUserDialog showCreateUserDialog={showCreateUserDialog} setShowCreateUserDialog={setShowCreateUserDialog} setUserRowSelected={setUserRowSelected} setRefresh={setRefresh}></CreateUserDialog>
       </div>
       <Separator />
-      <DataTableUniversalManagement searchKey="name" 
+      <DataTableUniversalManagement searchKey="nombre" 
         columns={columns} 
         data={users} 
         totalUsers={totalUsers} 

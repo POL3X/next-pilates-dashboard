@@ -1,15 +1,8 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { Heading } from '@/components/ui/heading';
-import { Separator } from '@/components/ui/separator';
-import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { columns } from './columns';
-import { DataTableUniversalManagement } from '@/components/ui/custom/universal-management/data-table-universal-management';
 import { User } from '@/constants/User/user';
-import { PaginationState } from '@tanstack/react-table';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
-import { userListUMAction } from '@/actions/universal-management/userListUMAction';
 import UserSessionContext from '@/components/layout/context/user-session';
 import { DataTableReceiptUM } from '@/components/ui/custom/universal-management/data-table-receipt-um';
 import { CardTitle } from '@/components/ui/card';
@@ -17,8 +10,6 @@ import { NewReceiptTabButton } from './new-receipt-button';
 import { Receipt } from '@/constants/Receipt/Receipt';
 import { receipListByRecipientAction } from '@/actions/universal-management/receipt/receipListByRecipientAction';
 import { ReceiptUmFilter } from '@/components/universal-management/receipt/receipt-tab';
-import { set } from 'date-fns';
-import { DateRange } from 'react-day-picker';
 
 interface ProductsClientProps {
   //setUserRowSelected: Dispatch<SetStateAction<User | null>>

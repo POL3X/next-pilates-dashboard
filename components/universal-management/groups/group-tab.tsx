@@ -104,20 +104,13 @@ export function GroupTab({ userSessionContextType, userRowSelected }: Props) {
   useEffect(() => {
     const fetchGroups = async () => {
       const { groups, userGroups } = await groupListByFiltersAction(filters, userSessionContextType?.userSession?.selectedCompany)
-      console.log(userGroups)
       setGroupList(groups)
       setUserGroupList(userGroups)
 
     }
     fetchGroups()
-    console.log(groupList)
   }, [filters, userSessionContextType, refresh])
 
-  const statusColors = {
-    warning: 'bg-orange-500',
-    success: 'bg-green-500',
-    info: 'bg-blue-500',
-  }
 
   const renderDropdown = (title: string, filterKey: FilterKeyArray, uuid?: string[], options?: string[]) => {
     const uuidEmpty = (uuid?.length == 0 || uuid == undefined || uuid[0] == "") ? true : false
@@ -183,10 +176,10 @@ export function GroupTab({ userSessionContextType, userRowSelected }: Props) {
     }
   }
 
-
+  const baseDate = '1970-01-01T';
   return (
-    <div className='flex flex-row gap-2'>
-      <div className="w-[50%]">
+    <div className='flex flex-row max-[1270px]:flex-col gap-2'>
+      <div className="w-[50%] max-[1270px]:w-[100%]">
         <h2 className="text-2xl font-bold mb-4">Filtros</h2>
         <div className="grid grid-cols-2 gap-4 mb-4">
           <Input
@@ -230,8 +223,8 @@ export function GroupTab({ userSessionContextType, userRowSelected }: Props) {
                   <div className="flex items-center space-x-2">
                     <span>{dayEnglishToSpanish[group.dayOfWeek.toLocaleLowerCase()]}</span>
                     <span>{group.name}</span>
-                    <span>{group.startTime.toString()}</span>
-                    <span className="text-sm text-gray-500">Monitor</span>
+                    <span>  {new Date(`${baseDate}${group.startTime}`).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </span>
                   </div>
                   <div className='flex flex-row'>
                     {filters.listaEspera ?
@@ -260,7 +253,9 @@ export function GroupTab({ userSessionContextType, userRowSelected }: Props) {
         </ScrollArea>
       </div>
       <Separator orientation="vertical" />
-      <div className='w-[50%]'>
+      <div className='w-[50%] max-[1270px]:w-[100%]'>
+      <span className="text-sm text-gray-500">Grupos de usuario</span>
+
         <ScrollArea className="">
           {userGroupList && userGroupList.map((group, index) => (
             <Card key={group.uuid} className="overflow-hidden">
@@ -273,8 +268,8 @@ export function GroupTab({ userSessionContextType, userRowSelected }: Props) {
                   <div className="flex items-center space-x-2">
                     <span>{dayEnglishToSpanish[group.dayOfWeek.toLocaleLowerCase()]}</span>
                     <span>{group.name}</span>
-                    <span>{group.startTime.toString()}</span>
-                    <span className="text-sm text-gray-500">Monitor</span>
+                    <span> {new Date(`${baseDate}${group.startTime}`).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                    <Badge variant={"outline"} className={badgeColor(group.userGroup.length, group.maxUsers)}>{group.userGroup.length + "/" + group.maxUsers}</Badge>
                   </div>
                   {expandedUserGroup.includes(index) ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
                 </Button>

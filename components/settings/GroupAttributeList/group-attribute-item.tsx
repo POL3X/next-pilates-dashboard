@@ -29,7 +29,7 @@ export function GroupAttributeItem({ groupAttribute, companyUuid, setRefresh }: 
     }
 
     return (
-        <><div className="flex flex-row items-center justify-between gap-2 max-w-[300px]">
+        <><div key={groupAttribute.uuid} className="flex flex-row items-center justify-between gap-2 max-w-[300px]">
             <div className="flex flex-row gap-2 items-center">
                 <Button
                     className="block !opacity-100"

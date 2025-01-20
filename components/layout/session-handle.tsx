@@ -50,7 +50,7 @@ export default function SessionHandle({
 // Este efecto se ejecutará cuando `userSession` cambie
 
   if (userSession === null) {
-    return <div>Loading...</div>;
+    return <div>Cargando...</div>;
   }
 
   return (

@@ -1,5 +1,5 @@
 'use client';
-import { Dispatch, Fragment, SetStateAction, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { ParentColumns, Task, useTaskStore } from '@/lib/store';
@@ -18,12 +18,10 @@ import {
   type DragStartEvent,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import type { Column } from './board-column';
 import { BoardColumn, BoardContainer } from './board-column';
 import NewSectionDialog from './new-section-dialog';
 import { TaskCard } from './task-card';
 import { Group } from '@/constants/Group/group';
-import { groupListKanbanAction } from '@/actions/Kanban/groupListKanbanAction';
 import { changeUserGroupAction } from '@/actions/Kanban/changeUserGroupAction';
 import UserSessionContext from '../layout/context/user-session';
 
@@ -213,7 +211,7 @@ export function KanbanBoard({parentColumnsProp, taskProp, setRefresh}: Props) {
           </Fragment>
         ))}
         
-        {!parentColumns.length && <NewSectionDialog />}
+        {!parentColumns.length && <p>No hay grupos creados</p>}
         </div>
       </BoardContainer>
 

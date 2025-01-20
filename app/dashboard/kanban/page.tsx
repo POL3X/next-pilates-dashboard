@@ -5,16 +5,14 @@ import { KanbanBoard } from '@/components/kanban/kanban-board';
 import { NewGroupDialog } from '@/components/kanban/new-group-dialog';
 import KanbanRefreshContext from '@/components/layout/context/kanban-refresh-context';
 import UserSessionContext from '@/components/layout/context/user-session';
-import PageContainer from '@/components/layout/page-container';
 import PageContainerKanban from '@/components/layout/page-container-kanban';
 import { Heading } from '@/components/ui/heading';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { ParentColumns, State, Task } from '@/lib/store';
+import { ParentColumns, Task } from '@/lib/store';
 import { useContext, useEffect, useState } from 'react';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/dashboard' },
-  { title: 'Kanban', link: '/dashboard/kanban' }
+  { title: 'Grupos', link: '/dashboard/grupos' }
 ];
 
 export default function Page() {
@@ -36,7 +34,7 @@ export default function Page() {
 
   // Si parentColumns o tasks son undefined, muestra un loader o nada
   if (!parentColumns || !tasks) {
-    return <div>Loading...</div>;  // Puedes personalizar el loader
+    return <div>Cargando...</div>;  // Puedes personalizar el loader
   }
 
   return (
@@ -44,7 +42,7 @@ export default function Page() {
       <div className="p-4">
         <Breadcrumbs items={breadcrumbItems} />
         <div className="flex items-start justify-between">
-          <Heading title="Kanban" description="Manage tasks by drag and drop" />
+          <Heading title="Grupos" description="Maneja los usuarios con drag and drop" />
           <NewGroupDialog user={null} setRefresh={setRefresh} />
         </div>
       </div>

@@ -1,13 +1,8 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { Dispatch, SetStateAction } from 'react'
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { PencilIcon, CheckIcon } from 'lucide-react'
 import { User } from '@/constants/User/user'
-import { ScrollArea, ScrollBar } from '../../ui/scroll-area'
 import { UserAttributeList } from './user-attribute-list'
-import { ScrollAreaKanban } from '@/components/ui/scroll-area-kanban'
 import { UserInfo } from '@/constants/User/UserInfo'
 import './userCard.css' // Import the custom CSS file
 
@@ -32,7 +27,7 @@ export default function UserCard({ isEditing, user, setRefresh, userInfo, setUse
   return (
 
     <>{isEditing ? (
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-row  gap-4">
         <div className='flex flex-col'>
           <div>
             <label className="text-sm font-medium text-gray-500">Nombre</label>
@@ -66,8 +61,8 @@ export default function UserCard({ isEditing, user, setRefresh, userInfo, setUse
         </div>
       </div>
     ) : (
-      <div className="flex flex-row items-center gap-4">
-        <div className='flex flex-row w-[50%] justify-between pr-2'>
+      <div className="flex flex-row  min-[1270px]:items-center max-[1270px]:flex-col  gap-4">
+        <div className='flex flex-row min-[1270px]:w-[50%] justify-between pr-2'>
           <div className='flex flex-col'>
             <div>
               <label className="text-sm font-medium text-gray-500">Nombre</label>
@@ -97,7 +92,7 @@ export default function UserCard({ isEditing, user, setRefresh, userInfo, setUse
             </div>
           </div>
         </div>
-        <div className='w-[50%] h-[100px] overflow-y-auto custom-scrollbar'>
+        <div className='min-[1270px]:w-[50%] h-[100px] overflow-y-auto custom-scrollbar'>
             <UserAttributeList userUserAttributeList={user?.userUserAttribute} user={user} setRefresh={setRefresh}></UserAttributeList>
         </div >
       </div>
