@@ -4,7 +4,7 @@ import { getCookie } from "@/actions/cookies/cookiesAction";
 import { Group } from "@/constants/Group/group";
 
 export async  function createKanbanGroupAction(group: Group){
-
+    console.log(group.startTime)
     try{
         const token = await getCookie();
         let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/group";
