@@ -23,8 +23,8 @@ export async  function createKanbanGroupAction(group: Group){
                 categoryUuid: group.categoryUuid, // Asigna el UUID de la categoría seleccionada
                 name: group.name, // Asigna el nombre del grupo desde un formulario, por ejemplo
                 dayOfWeek: group.dayOfWeek, // Asigna el día de la semana seleccionado
-                startTime: group.startTime.toLocaleTimeString(), // Hora de inicio desde un formulario o selección
-                duration: group.duration.toLocaleTimeString(), // Duración del grupo (horas/minutos)
+                startTime: group.startTime.toString(), // Hora de inicio desde un formulario o selección
+                duration: group.duration.toString(), // Duración del grupo (horas/minutos)
                 maxUsers: group.maxUsers, // Número máximo de usuarios permitido
             }) 
           })
