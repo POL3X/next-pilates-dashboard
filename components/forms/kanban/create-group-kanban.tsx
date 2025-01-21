@@ -47,7 +47,7 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
                 dayOfWeek: daySelected, // Asigna el día de la semana seleccionado
                 startTime: startTimePicker, // Hora de inicio desde un formulario o selección
                 duration: durationTimePicker, // Duración del grupo (horas/minutos)
-                maxUsers: createGroupForm.maxUsers, // Número máximo de usuarios permitido
+                maxUsers: createGroupForm.maxUsers ?? 0, // Número máximo de usuarios permitido
                 userGroup: []
             };
             const groupResponse = await createKanbanGroupAction(newGroup)
@@ -82,9 +82,9 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
                     <Label>Categoria: </Label>
                     <ComboboxCategoryGroup user={user} categorySelected={categorySelected} setCategorySelected={setCategorySelected}></ComboboxCategoryGroup>
                     <Label>Nombre</Label>
-                    <Input type="text" placeholder="A" name="name" value={createGroupForm.name}  onChange={handleInputChange} ></Input>
+                    <Input type="text" placeholder="Ingrese nombre..." name="name" value={createGroupForm.name}  onChange={handleInputChange} ></Input>
                     <Label>Max. Usuarios</Label>
-                    <Input type="number" placeholder="0" name="maxUsers" value={createGroupForm.maxUsers}  onChange={handleInputChange} ></Input>
+                    <Input type="number" placeholder="Ingrese número..." name="maxUsers" value={createGroupForm.maxUsers}  onChange={handleInputChange} ></Input>
                     <Button onClick={onClickCreate}>Crear Grupo</Button>
                 </div>
             </form>

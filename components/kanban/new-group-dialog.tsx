@@ -15,7 +15,7 @@ export interface CreateGroupForm {
   categoryUuid: string;
   name: string;
   dayOfWeek: string;
-  maxUsers: number;
+  maxUsers?: number;
 }
 
 interface Props{
@@ -33,7 +33,7 @@ export function NewGroupDialog({user, setRefresh}:Props) {
     categoryUuid: '',
     name: '',
     dayOfWeek: 'Lunes',
-    maxUsers: 0,
+    maxUsers: undefined,
   });
 
   const router = useRouter();
@@ -48,7 +48,7 @@ export function NewGroupDialog({user, setRefresh}:Props) {
         categoryUuid: '',
         name: '',
         dayOfWeek: 'Monday',
-        maxUsers: 0,
+        maxUsers: undefined,
       });
   };
 
