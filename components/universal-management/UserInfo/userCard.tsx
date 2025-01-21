@@ -92,9 +92,10 @@ export default function UserCard({ isEditing, user, setRefresh, userInfo, setUse
             </div>
           </div>
         </div>
-        <div className='min-[1270px]:w-[50%] h-[100px] overflow-y-auto custom-scrollbar'>
+        {/*  <div className='min-[1270px]:w-[50%] h-[100px] overflow-y-auto custom-scrollbar'>
             <UserAttributeList userUserAttributeList={user?.userUserAttribute} user={user} setRefresh={setRefresh}></UserAttributeList>
-        </div >
+        </div > */}
+       
       </div>
     )}</>
   )
