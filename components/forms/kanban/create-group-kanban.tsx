@@ -35,7 +35,15 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
 
     const userSessionContextType = useContext(UserSessionContext)
     const { toast } = useToast();
-
+    const formatTimeUTC = (date: Date | undefined): Date => {
+        if (!date) return new Date();
+        // Obtenemos los minutos de diferencia entre la hora local y UTC.
+        const offset = date.getTimezoneOffset();
+        // Creamos un nuevo objeto Date ajustado a UTC.
+        const utcDate = new Date(date.getTime() - offset * 60000);
+        // Extraemos la hora en formato "HH:MM:SS".
+        return utcDate;
+      };
     const onClickCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault(); // Evita que la página se recargue
         if(startTimePicker != undefined && durationTimePicker != undefined){
@@ -45,8 +53,8 @@ export default function CreateGroupKanban({ createGroupForm, setCreateGroupForm,
                 categoryUuid: categorySelected?.uuid ?? '', // Asigna el UUID de la categoría seleccionada
                 name: createGroupForm.name, // Asigna el nombre del grupo desde un formulario, por ejemplo
                 dayOfWeek: daySelected, // Asigna el día de la semana seleccionado
-                startTime: startTimePicker, // Hora de inicio desde un formulario o selección
-                duration: durationTimePicker, // Duración del grupo (horas/minutos)
+                startTime: formatTimeUTC(startTimePicker), // Hora de inicio desde un formulario o selección
+                duration: formatTimeUTC(durationTimePicker), // Duración del grupo (horas/minutos)
                 maxUsers: createGroupForm.maxUsers ?? 0, // Número máximo de usuarios permitido
                 userGroup: []
             };
