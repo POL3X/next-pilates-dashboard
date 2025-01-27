@@ -8,6 +8,14 @@ export async  function editGroupAction(group: Group,compnayUuid: string){
 
     try{
         const token = await getCookie();
+        console.log(group.startTime)
+        const extractTime = (date: Date): string => {
+            const hours = date.getUTCHours().toString().padStart(2, '0');
+            const minutes = date.getUTCHours().toString().padStart(2, '0');
+            const seconds = date.getUTCHours().toString().padStart(2, '0');
+            console.log(hours);
+            return `${hours}:${minutes}:${seconds}`;
+          };
         let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/group/";
         const messageResponse = await fetch( url, {
             method: "PATCH",
@@ -23,18 +31,8 @@ export async  function editGroupAction(group: Group,compnayUuid: string){
                 companyUuid: compnayUuid,
                 name: group.name, 
                 dayOfWeek: group.dayOfWeek, 
-                startTime: group.startTime.toLocaleTimeString('es-ES', {
-                    hour12: false,
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                  }), 
-                duration: group.duration.toLocaleTimeString('es-ES', {
-                    hour12: false,
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                  }), 
+                startTime: extractTime(group.startTime), 
+                duration:  extractTime(group.duration), 
                 maxUsers: group.maxUsers, 
                 categoryUuid: group.categoryUuid, 
             }

@@ -52,10 +52,16 @@ export default function EditGroupKanbanDialog({ editGroupForm, setEditGroupForm,
 
     const userSessionContextType = useContext(UserSessionContext)
     const { toast } = useToast();
-
+    const formatTimeUTC = (date: Date | undefined): Date => {
+        if (!date) return new Date();
+        const offset = date.getTimezoneOffset();
+        const utcDate = new Date(date.getTime() - offset * 60000);
+        console.log(offset)
+        console.log(`ESTA ES LA HORA 2` + utcDate) 
+        return utcDate;
+      };
     const onClickCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault(); // Evita que la página se recargue
-        console.log(user)
         if (startTimePicker != undefined && durationTimePicker != undefined) {
             const newGroup: Group = {
                 uuid: editGroupForm.uuid,
@@ -63,8 +69,8 @@ export default function EditGroupKanbanDialog({ editGroupForm, setEditGroupForm,
                 categoryUuid: categorySelected?.uuid ?? '', // Asigna el UUID de la categoría seleccionada
                 name: editGroupForm.name, // Asigna el nombre del grupo desde un formulario, por ejemplo
                 dayOfWeek: daySelected, // Asigna el día de la semana seleccionado
-                startTime: startTimePicker, // Hora de inicio desde un formulario o selección
-                duration: durationTimePicker, // Duración del grupo (horas/minutos)
+                startTime: formatTimeUTC(startTimePicker), // Hora de inicio desde un formulario o selección
+                duration: formatTimeUTC(durationTimePicker), // Duración del grupo (horas/minutos)
                 maxUsers: editGroupForm.maxUsers, // Número máximo de usuarios permitido
                 userGroup: []
             };
