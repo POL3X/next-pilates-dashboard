@@ -9,7 +9,6 @@ export async  function editReceiptAction(receipt: Receipt,compnayUuid: string){
         receipt.companyUuid = compnayUuid;
         const token = await getCookie();
         let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/universal-management/receipt/";
-        console.log(url)
         const messageResponse = await fetch( url, {
             method: "PATCH",
             headers: {

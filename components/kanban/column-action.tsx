@@ -43,7 +43,6 @@ export function ColumnActions({
   setRefresh: React.Dispatch<React.SetStateAction<number>>,
   group: Group
 }) {
-  const [name, setName] = React.useState(title);
   const [editGroupForm, setEditGroupForm] = React.useState<Group>(group)
   const [openEditModal, setOpenEditModal] = React.useState<boolean>(false)
   const removeCol = useTaskStore((state) => state.removeCol);
@@ -58,7 +57,7 @@ export function ColumnActions({
     <>
       <div className='flex flex-row justify-between w-[100%]'>
         <div className='flex items-center'>
-           <p>{group.startTime.toString().slice(0, 5) + ' - ' + name + ' - ' + group.category?.name} </p>
+           <p>{group.startTime.toString().slice(0, 5) + ' - ' + title + ' - ' + group.category?.name} </p>
           </div>
 
         <div className='flex flex-row'>

@@ -17,6 +17,8 @@ import { ComboboxDayOfWeek } from "@/components/ui/custom/Kanban/combobox/combob
 import { createKanbanGroupAction } from "@/actions/Kanban/createGroupAction";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { dayEnglishToSpanish } from "@/constants/DayOfWeek";
+import { editGroupAction } from "@/actions/Kanban/editGroupAction";
+import { group } from "console";
 
 interface Props {
     editGroupForm: Group,
@@ -56,7 +58,7 @@ export default function EditGroupKanbanDialog({ editGroupForm, setEditGroupForm,
         console.log(user)
         if (startTimePicker != undefined && durationTimePicker != undefined) {
             const newGroup: Group = {
-                uuid: '',
+                uuid: editGroupForm.uuid,
                 companyUuid: userSessionContextType.userSession?.selectedCompany!,  // Asigna el UUID de la empresa seleccionada
                 categoryUuid: categorySelected?.uuid ?? '', // Asigna el UUID de la categoría seleccionada
                 name: editGroupForm.name, // Asigna el nombre del grupo desde un formulario, por ejemplo
@@ -66,9 +68,7 @@ export default function EditGroupKanbanDialog({ editGroupForm, setEditGroupForm,
                 maxUsers: editGroupForm.maxUsers, // Número máximo de usuarios permitido
                 userGroup: []
             };
-            console.log(newGroup.startTime.toUTCString())
-            //const groupResponse = await createKanbanGroupAction(newGroup)
-            //addCol(daySelected, groupResponse)
+             await editGroupAction(newGroup, newGroup.companyUuid);
         }
         setOpen(false)
         setRefresh(Math.random())

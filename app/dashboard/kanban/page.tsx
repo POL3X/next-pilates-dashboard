@@ -25,8 +25,8 @@ export default function Page() {
     const fetchGroups = async () => {
       if (userSessionContextType.userSession?.selectedCompany != undefined) {
         const state = await groupListKanbanAction(userSessionContextType.userSession?.selectedCompany);
-        setTasks(state.tasks);
-        setParentColumns(state.parentColumns);
+        setTasks(state?.tasks);
+        setParentColumns(state?.parentColumns);
       }
     };
     fetchGroups();

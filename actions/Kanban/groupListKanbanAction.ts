@@ -31,10 +31,9 @@ export async  function groupListKanbanAction(companyUuid: string){
           }
 
           const state: State= await messageResponse.json();
-          console.log(state.parentColumns[0])
           return state;
         
     }catch(error){ 
-        throw(error)
+        console.log(error);
     }
 }
