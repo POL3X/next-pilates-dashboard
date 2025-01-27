@@ -45,7 +45,6 @@ export function BoardColumn({ column, tasks, isOverlay, setRefresh, companyUuid 
     const taskWId = taskInWaitList.map((task) => task.id);
     return { taskNotWaitList, taskInWaitList, taskNoWId, taskWId };
   }, [tasks]);
-  console.log(column)
   const {
     setNodeRef,
     attributes,

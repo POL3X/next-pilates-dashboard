@@ -65,7 +65,6 @@ export function ComboboxUserAttribute({ user, userAttributeSelected, setUserAttr
             })
             if (userAttributeSelected) {
                 setUserAttributeSelected(userAttributeSelected)
-                console.log(userAttributeSelected)
             }
         } else if (userAttributeList && userAttributeList.length > 1) {
             // Verifica que receiptTypeData no sea undefined antes de acceder a length

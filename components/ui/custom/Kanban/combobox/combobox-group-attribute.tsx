@@ -34,7 +34,6 @@ export function ComboboxGroupGroupAttibute({groupUuid, group,setRefresh}: {group
     const TagIcon = Icons['tag'];
     useEffect(() => {
         if (open) {
-            console.log(open)
             const fetchUser = async () => {
                 try {
                     const groupAttributeList = await groupAttributeListAction(

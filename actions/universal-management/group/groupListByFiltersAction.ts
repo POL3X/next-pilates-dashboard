@@ -79,7 +79,6 @@ const getDayIndex = (day: string) => dayNamesEn.indexOf(day);
 const compareGroups = (a: Group, b: Group) => {
   const dayA = getDayIndex(a.dayOfWeek);
   const dayB = getDayIndex(b.dayOfWeek);
-  console.log(a.dayOfWeek)
   // Si los días son diferentes, ordena por día
   if (dayA !== dayB) {
     return dayA - dayB;

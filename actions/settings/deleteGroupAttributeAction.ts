@@ -6,7 +6,6 @@ export async  function deleteGroupAttributeAction(groupAttributeUuid: string, co
 
     try{
         const token = await getCookie();
-        console.log(groupAttributeUuid)
         let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/group-attribute?companyUuid=" + companyUuid + "&groupAttributeUuid="+groupAttributeUuid;
 
         const messageResponse = await fetch( url, {

@@ -8,7 +8,6 @@ export async  function editUserInfoAction(userUuid:string,userInfo: UserInfo ,co
     try{
         const token = await getCookie();
         let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/universal-management/user/";
-        console.log(url)
         const messageResponse = await fetch( url, {
             method: "PATCH",
             headers: {

@@ -8,7 +8,6 @@ export async  function createReceiptUMAction(receipt: Receipt){
     try{
         const token = await getCookie();
         let url =  process.env.NEXT_PUBLIC_BACK_URL + "/v1/universal-management/receipt/";
-        console.log(url)
         const messageResponse = await fetch( url, {
             method: "POST",
             headers: {

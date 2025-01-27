@@ -53,7 +53,6 @@ export function ColumnActions({
   const kanbanRefreshContext = useContext(KanbanRefreshContext)
   const formatTimeWithoutTimezone = (time: any): string => {
     // Asegúrate de que el formato sea "HH:mm:ss" o similar
-    console.log( "ESTA ES LA HORA " + time)
     const [hours, minutes] = time.split(':');
     // Devuelve el formato "HH:mm"
     return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;

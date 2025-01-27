@@ -43,7 +43,6 @@ export function ComboboxPopoverAddUser({taskColumns,groupUuid, setRefresh}:{task
   const Icon = Icons['userPlus'];
  useEffect(() => {
     if(open){
-      console.log(open)
       const fetchUser = async () => {
         try{
           const {usersFormatted, total} = await findUserByNamePopoverAction(inputName,
@@ -56,7 +55,6 @@ export function ComboboxPopoverAddUser({taskColumns,groupUuid, setRefresh}:{task
            )
            setUserListPopover(usersFormatted)
            setTotal(total)
-           console.log(usersFormatted) 
         }catch(error){
 
         }
