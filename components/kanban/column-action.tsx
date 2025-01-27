@@ -51,13 +51,18 @@ export function ColumnActions({
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const kanbanRefreshContext = useContext(KanbanRefreshContext)
-
+  const formatTimeWithoutTimezone = (time: any): string => {
+    // Asegúrate de que el formato sea "HH:mm:ss" o similar
+    const [hours, minutes] = time.split(':');
+    // Devuelve el formato "HH:mm"
+    return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+  };
 
   return (
     <>
       <div className='flex flex-row justify-between w-[100%]'>
         <div className='flex items-center'>
-           <p>{group.startTime.toString().slice(0, 5) + ' - ' + title + ' - ' + group.category?.name} </p>
+           <p>{formatTimeWithoutTimezone(group.startTime) + ' - ' + title + ' - ' + group.category?.name} </p>
           </div>
 
         <div className='flex flex-row'>
