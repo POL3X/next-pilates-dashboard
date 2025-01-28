@@ -82,3 +82,13 @@
 html{
   scroll-behavior: smooth;
 }
+
+[cmdk-root] {
+  display: block;
+  position: relative;
+}
+
+[cmdk-list] {
+  overflow-y: auto;
+  z-index: 1000;
+}

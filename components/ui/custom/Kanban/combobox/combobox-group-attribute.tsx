@@ -85,7 +85,7 @@ export function ComboboxGroupGroupAttibute({groupUuid, group,setRefresh}: {group
                 <PopoverContent className="p-3" side="right" align="start">
                     <Command>
                         {/*<CommandInput value={inputName} onInput={handleInputChange} placeholder="Buscar usuario..." />*/}
-                        <CommandList>
+                        <CommandList   style={{ zIndex: 1000, pointerEvents: 'auto' }}>
                             {/* Si no hay resultados, mostrar CommandEmpty */}
                             <CommandEmpty>Sin resultados.</CommandEmpty>
 
