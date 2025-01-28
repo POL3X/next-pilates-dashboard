@@ -4,7 +4,7 @@ import { Icons } from "../../icons"
 import { Button } from "../../ui/button"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../../ui/alert-dialog"
 import { toast } from "../../ui/use-toast"
-import {  Dispatch, SetStateAction, useContext, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useState } from "react"
 import { ComboboxUserAttribute } from "../../ui/custom/universal-management/combobox/combobox-user-attribute"
 import { UserAttribute } from "@/constants/UserAttribute/userAttribute"
 import { User } from "@/constants/User/user"
@@ -15,7 +15,7 @@ import UserSessionContext from "../../layout/context/user-session"
 interface Props {
     userUserAttributeList?: UserUserAttribute[],
     user: User | null,
-    setRefresh:Dispatch<SetStateAction<number>>
+    setRefresh: Dispatch<SetStateAction<number>>
 }
 
 export function UserAttributeList({ userUserAttributeList, user, setRefresh }: Props) {
@@ -25,7 +25,7 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
     const [value, setValue] = useState<string>('')
     const userSessionContextType = useContext(UserSessionContext)
 
-    const onInputChange = (value: string)=> {
+    const onInputChange = (value: string) => {
         setValue(value)
     }
 
@@ -36,7 +36,7 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
             value: value
         } as UserUserAttribute, userSessionContextType.userSession?.selectedCompany)
 
-        if(userUserCreated){
+        if (userUserCreated) {
             setRefresh(Math.random)
             setUserAttributeSelected(null)
             setValue('')
@@ -53,13 +53,18 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
     return (
         <>
             <div className="flex flex-col gap-2 ">
-                {userUserAttributeList?.map((uuA, index) => {
-                    return (<>
-                        <UserAttributeItem key={index + uuA.userUuid} userUserAttribute={uuA} companyUuid={userSessionContextType.userSession?.selectedCompany} setRefresh={setRefresh}></UserAttributeItem>
-                    </>)
-                })}
+                {userUserAttributeList
+                    ?.filter(uuA => uuA && uuA.userUuid) // Filtra los elementos válidos
+                    .map((uuA, index) => (
+                        <UserAttributeItem
+                            key={index + uuA.userUuid}
+                            userUserAttribute={uuA}
+                            companyUuid={userSessionContextType.userSession?.selectedCompany}
+                            setRefresh={setRefresh}
+                        />
+                    ))}
                 <div className="flex items-center">
-                <Button size='icon' onClick={() => setShowDeleteDialog(!showDeleteDialog)}><PlusIcon></PlusIcon></Button>
+                    <Button size='icon' onClick={() => setShowDeleteDialog(!showDeleteDialog)}><PlusIcon></PlusIcon></Button>
                 </div>
             </div>
             <AlertDialog open={showDeleteDialog} onOpenChange={handleDialogChange}>
@@ -72,7 +77,7 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
                     <ComboboxUserAttribute user={user} userAttributeSelected={userAtrtibuteSelected} setUserAttributeSelected={setUserAttributeSelected} exludeUserAttributeUuid={user?.userUserAttribute?.map((uuA) => {
                         return uuA.userAttribute.uuid
                     })}></ComboboxUserAttribute>
-                   { userAtrtibuteSelected ? <Input type="text" value={value} onChange={(event) => onInputChange(event.target.value)}></Input> : <></>}
+                    {userAtrtibuteSelected ? <Input type="text" value={value} onChange={(event) => onInputChange(event.target.value)}></Input> : <></>}
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <Button
