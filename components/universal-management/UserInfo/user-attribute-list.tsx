@@ -53,8 +53,8 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
     return (
         <>
             <div className="flex flex-col gap-2 ">
-               { /*{userUserAttributeList
-                    ?.filter(uuA => uuA && uuA.userUuid) // Filtra los elementos válidos
+               {userUserAttributeList
+                    ?.filter(uuA => uuA && uuA.userUuid ) // Filtra los elementos válidos
                     .map((uuA, index) => (
                         <UserAttributeItem
                             key={index + uuA.userUuid}
@@ -62,7 +62,7 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
                             companyUuid={userSessionContextType.userSession?.selectedCompany}
                             setRefresh={setRefresh}
                         />
-                    ))}*/}
+                    ))}
                 <div className="flex items-center">
                     <Button size='icon' onClick={() => setShowDeleteDialog(!showDeleteDialog)}><PlusIcon></PlusIcon></Button>
                 </div>

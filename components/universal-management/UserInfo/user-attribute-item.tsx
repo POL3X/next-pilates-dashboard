@@ -51,7 +51,7 @@ export function UserAttributeItem({ userUserAttribute, companyUuid, setRefresh}:
                 </Button>
             </CardHeader>
             <CardContent>
-                <p>{userUserAttribute?.userAttribute.name}</p>
+                <p>{userUserAttribute?.userAttribute?.name}</p>
                 {!isEditing ? <p className="text-sm break-words overflow-hidden text-ellipsis">{userUserAttribute?.value}</p> : <Input type="text" value={inputValue} onChange={(event) => setInputValue(event.target.value)}></Input>}
             </CardContent>
         </Card>
