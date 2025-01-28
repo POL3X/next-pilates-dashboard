@@ -59,6 +59,6 @@ export async function receipListByRecipientAction(recipientUuid: string | undefi
     return { receiptList, receiptCountCharged, receiptCountPending, error: false};
 
   } catch (error) {
-    throw (error);
+    return { receiptList: [], receiptCountCharged: 0, receiptCountPending: 0 , error: true};
   }
 }
