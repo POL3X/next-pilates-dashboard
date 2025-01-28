@@ -74,10 +74,9 @@ export function UserAttributeList({ userUserAttributeList, user, setRefresh }: P
                             Crear nuevo atributo de usuario
                         </AlertDialogTitle>
                     </AlertDialogHeader>
-                    <ComboboxUserAttribute user={user} userAttributeSelected={userAtrtibuteSelected} setUserAttributeSelected={setUserAttributeSelected} exludeUserAttributeUuid={user?.userUserAttribute
-        ?.filter(uuA => uuA?.userAttribute?.uuid) // Filtra elementos válidos
-        .map((uuA) => uuA.userAttribute.uuid) // Mapea solo si es válido
-    }></ComboboxUserAttribute>
+                    <ComboboxUserAttribute user={user} userAttributeSelected={userAtrtibuteSelected} setUserAttributeSelected={setUserAttributeSelected} exludeUserAttributeUuid={
+                        user?.userUserAttribute?.filter(uuA =>  uuA?.userAttribute?.uuid && uuA?.userAttribute?.name ).map((uuA) => uuA.userAttribute.uuid) // Mapea solo si es válido
+                    }></ComboboxUserAttribute>
                     {userAtrtibuteSelected ? <Input type="text" value={value} onChange={(event) => onInputChange(event.target.value)}></Input> : <></>}
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
