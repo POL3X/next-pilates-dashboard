@@ -44,7 +44,7 @@ export default function Page() {
             status: user?.status || 'ENABLE',
           });
     }
-    const [user, setUser] = useState<User | null>(null)
+    const [user, setUser] = useState<User | null >(null)
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -52,7 +52,7 @@ export default function Page() {
                 return
             }
             const userInfo = await userInfoUMAction(userRowSelected?.uuid, userSessionContextType.userSession.selectedCompany)
-            setUser(userInfo)
+            setUser(userInfo ?? null)
         }
         fetchUserInfo()
     }, [userRowSelected, refresh])
