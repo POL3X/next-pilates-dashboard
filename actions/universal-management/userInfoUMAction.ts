@@ -28,6 +28,6 @@ export async  function userInfoUMAction(userUuid:string, companyUuid: string){
           return user;
         
     }catch(error){ 
-        throw(error)
+        console.log(error);
     }
 }
