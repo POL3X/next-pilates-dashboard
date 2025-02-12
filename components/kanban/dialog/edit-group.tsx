@@ -1,12 +1,11 @@
 'use client';
 
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Label } from "../../ui/label";
 import { User } from "@/constants/User/user";
 import { Button } from "../../ui/button";
 import UserSessionContext from "../../layout/context/user-session";
 import { useToast } from "@/components/ui/use-toast";
-import { CreateGroupForm } from "@/components/kanban/new-group-dialog";
 import { Group } from "@/constants/Group/group";
 import { TimePickerDemo } from "@/components/ui/time-picker-demo";
 import { Input } from "@/components/ui/input";
@@ -14,11 +13,9 @@ import { Category } from "@/constants/Category/category";
 import { ComboboxCategoryGroup } from "@/components/ui/custom/Kanban/combobox/combobox-category-group";
 import { useTaskStore } from "@/lib/store";
 import { ComboboxDayOfWeek } from "@/components/ui/custom/Kanban/combobox/combobox-day-of-week";
-import { createKanbanGroupAction } from "@/actions/Kanban/createGroupAction";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { dayEnglishToSpanish } from "@/constants/DayOfWeek";
 import { editGroupAction } from "@/actions/Kanban/editGroupAction";
-import { group } from "console";
 
 interface Props {
     editGroupForm: Group,
@@ -47,8 +44,7 @@ export default function EditGroupKanbanDialog({ editGroupForm, setEditGroupForm,
     const [startTimePicker, setStartTimePicker] = useState<Date | undefined>(date)
     const [durationTimePicker, setDurationTimePicker] = useState<Date | undefined>(dateDuration)
     const [daySelected, setDaySelected] = useState<string>(capitalizeFirstLetter(dayEnglishToSpanish[editGroupForm.dayOfWeek.toLocaleLowerCase()]))
-    console.log(startTimePicker)
-    const addCol = useTaskStore((state) => state.addCol);
+    //const addCol = useTaskStore((state) => state.addCol);
 
     const userSessionContextType = useContext(UserSessionContext)
     const { toast } = useToast();
@@ -56,8 +52,6 @@ export default function EditGroupKanbanDialog({ editGroupForm, setEditGroupForm,
         if (!date) return new Date();
         const offset = date.getTimezoneOffset();
         const utcDate = new Date(date.getTime() - offset * 60000);
-        console.log(offset)
-        console.log(`ESTA ES LA HORA 2` + utcDate) 
         return utcDate;
       };
     const onClickCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {

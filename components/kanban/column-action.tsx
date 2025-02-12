@@ -29,6 +29,7 @@ import { Group } from '@/constants/Group/group';
 import EditGroupKanbanDialog from './dialog/edit-group';
 import { useContext } from 'react';
 import KanbanRefreshContext from '../layout/context/kanban-refresh-context';
+import DuplicateGroupKanbanDialog from './dialog/duplicate-group';
 
 export function ColumnActions({
   title,
@@ -45,6 +46,9 @@ export function ColumnActions({
 }) {
   const [editGroupForm, setEditGroupForm] = React.useState<Group>(group)
   const [openEditModal, setOpenEditModal] = React.useState<boolean>(false)
+  const [openDuplicateModal, setOpenDuplicateModal] = React.useState<boolean>(false)
+  const [duplicateGroupForm, setDuplicateGroupForm] = React.useState<Group>(group)
+
   const removeCol = useTaskStore((state) => state.removeCol);
   const [editDisable, setIsEditDisable] = React.useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
@@ -57,7 +61,7 @@ export function ColumnActions({
     // Devuelve el formato "HH:mm"
     return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
   };
-
+console.log(taskColumns)
   return (
     <>
       <div className='flex flex-row justify-between w-[100%]'>
@@ -71,7 +75,7 @@ export function ColumnActions({
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" className="ml-1">
-                <span className="sr-only">Actions</span>
+                <span className="sr-only">Acciones</span>
                 <DotsHorizontalIcon className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -85,7 +89,18 @@ export function ColumnActions({
                   }, 500);
                 }}
               >
-                Rename
+                Editar
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => {
+                  setIsEditDisable(!editDisable);
+                  setOpenDuplicateModal(!openEditModal);
+                  setTimeout(() => {
+                    inputRef.current && inputRef.current?.focus();
+                  }, 500);
+                }}
+              >
+                Duplicar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
@@ -93,7 +108,7 @@ export function ColumnActions({
                 onSelect={() => setShowDeleteDialog(true)}
                 className="text-red-600"
               >
-                Delete Section
+                Eliminar
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -104,14 +119,14 @@ export function ColumnActions({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure want to delete column?
+              ¿Seguro que quieres eliminar el grupo?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              NOTE: All tasks related to this category will also be deleted.
+              NOTA: Todas las asociaciones de usuarios a este grupo se eliminaran.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <Button
               variant="destructive"
               onClick={() => {
@@ -124,12 +139,14 @@ export function ColumnActions({
                 });
               }}
             >
-              Delete
+              Eliminar
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
       <EditGroupKanbanDialog editGroupForm={editGroupForm} setEditGroupForm={setEditGroupForm} user={null} setOpen={setOpenEditModal} open={openEditModal} setRefresh={kanbanRefreshContext.setRefresh}></EditGroupKanbanDialog>
+      <DuplicateGroupKanbanDialog duplicateGroupForm={duplicateGroupForm} setDuplicateGroupForm={setDuplicateGroupForm} taskColumns={taskColumns} user={null} setOpen={setOpenDuplicateModal} open={openDuplicateModal} setRefresh={kanbanRefreshContext.setRefresh}></DuplicateGroupKanbanDialog>
+
     </>
   );
 }
